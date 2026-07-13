@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verifying the Server &amp; Embedded Tomcat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-primary: #34a853;
+      --bg-main: #090a0f;
+      --bg-card: #1c1e29;
+      --border-color: #2e3245;
+      --text-main: #f3f4f6;
+      --text-muted: #8e96aa;
+      --accent-glow: rgba(52, 168, 83, 0.1);
+      --error-red: #ef4444;
+      --error-glow: rgba(239, 68, 68, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: #14151f; /* Matches workspace frame background */
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.6;
+      padding: 30px;
+    }
+
+    .guide-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 32px;
+    }
+
+    .header-block {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+    }
+
+    .header-block h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .intro-text {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--brand-primary);
+      margin: 28px 0 12px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    p {
+      font-size: 14px;
+      color: var(--text-main);
+      margin-bottom: 16px;
+    }
+
+    .step-list {
+      list-style-type: none;
+      margin-bottom: 20px;
+    }
+
+    .step-item {
+      position: relative;
+      padding-left: 32px;
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+
+    .step-number {
+      position: absolute;
+      left: 0;
+      top: 2px;
+      width: 20px;
+      height: 20px;
+      background-color: var(--accent-glow);
+      border: 1px solid var(--brand-primary);
+      color: var(--brand-primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      background-color: rgba(9, 10, 15, 0.6);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #e5c07b;
+      font-size: 13px;
+    }
+
+    .log-terminal {
+      background-color: #090a0f;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: #a9b1d6;
+      margin: 16px 0;
+      overflow-x: auto;
+      white-space: pre;
+      line-height: 1.5;
+    }
+
+    .highlight-green {
+      color: #9ece6a;
+      font-weight: 600;
+    }
+
+    .info-box {
+      background-color: rgba(9, 10, 15, 0.4);
+      border-left: 3px solid var(--brand-primary);
+      padding: 16px;
+      border-radius: 0 6px 6px 0;
+      margin: 20px 0;
+    }
+
+    .info-box.alert-box {
+      border-left-color: var(--error-red);
+      background-color: rgba(239, 68, 68, 0.03);
+    }
+
+    .info-box-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .alert-box .info-box-title {
+      color: #ff6b6b;
+    }
+
+    .info-box p {
+      margin-bottom: 0;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .footer-note {
+      border-top: 1px solid var(--border-color);
+      margin-top: 32px;
+      padding-top: 16px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="guide-container">
+    <div class="header-block">
+      <h1>Verifying the Server &amp; Embedded Tomcat</h1>
+      <p class="intro-text">Now that our application is initialized and running inside our IDE, let's explore how to inspect execution logs, verify server ports, and interpret early web browser output.</p>
+    </div>
+
+    <p>Once you run the application main method, Spring Boot instantiates the background framework ecosystem. Unlike traditional Java web developments, you don't need to manually configure separate server installations.</p>
+
+    <div class="section-title">Analyzing the Startup Logs</div>
+    <p>Look at the console log outputs inside your IDE window. You will notice explicit initialization entries that verify your runtime context:</p>
+
+    <div class="log-terminal">
+[main] o.s.b.w.embedded.tomcat.TomcatWebServer  : <span class="highlight-green">Tomcat initialized with port(s): 8080 (http)</span>
+[main] o.s.b.w.className.MyappApplication        : Started MyappApplication in 2.134 seconds...</div>
+
+    <div class="info-box">
+      <div class="info-box-title">What is an Embedded Server?</div>
+      <p>Spring Boot includes an <strong>Embedded Tomcat Server</strong> package bundled directly within its starter frameworks. This means your application acts as an independent, self-contained executable that handles web routing endpoints without needing any external server installations.</p>
+    </div>
+
+    <div class="section-title">Accessing Localhost</div>
+    <ul class="step-list">
+      <li class="step-item">
+        <span class="step-number">1</span>
+        Ensure your IDE console shows that the application is actively running.
+      </li>
+      <li class="step-item">
+        <span class="step-number">2</span>
+        Open any modern web browser interface.
+      </li>
+      <li class="step-item">
+        <span class="step-number">3</span>
+        In the URL navigation box, input the following target path address: <code>http://localhost:8080</code>
+      </li>
+    </ul>
+
+    <div class="info-box alert-box">
+      <div class="info-box-title">Expected Behavior: Whitelabel Error Page</div>
+      <p>When you visit the local server page right now, your browser will display a standard <strong>"Whitelabel Error Page" (HTTP Status 404 – Not Found)</strong>. Do not panic! This indicates your server is successfully up and listening for incoming connection requests. The error displays purely because we haven't mapped any logic pathways or written codes to render data to this route yet.</p>
+    </div>
+
+    <div class="footer-note">
+      Basic verification success! In our next module, we'll implement a custom REST Controller to override this error template and present data to the user.
+    </div>
+  </div>
+
+</body>
+</html>
