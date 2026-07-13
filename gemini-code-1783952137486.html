@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maven Standard Directory Structure &amp; Project Benefits</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-primary: #34a853;
+      --bg-main: #090a0f;
+      --bg-card: #1c1e29;
+      --border-color: #2e3245;
+      --text-main: #f3f4f6;
+      --text-muted: #8e96aa;
+      --accent-glow: rgba(52, 168, 83, 0.1);
+      --folder-blue: #60a5fa;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: #14151f; /* Matches workspace frame background */
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.6;
+      padding: 30px;
+    }
+
+    .guide-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 32px;
+    }
+
+    .header-block {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+    }
+
+    .header-block h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .intro-text {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--brand-primary);
+      margin: 28px 0 12px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    p {
+      font-size: 14px;
+      color: var(--text-main);
+      margin-bottom: 16px;
+    }
+
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .benefit-card {
+      background-color: rgba(9, 10, 15, 0.4);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 16px;
+    }
+
+    .benefit-card h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .benefit-card p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 0;
+    }
+
+    /* Modern CSS Visual Tree Component */
+    .project-tree-container {
+      background-color: #090a0f;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 24px;
+      margin: 20px 0;
+    }
+
+    .tree-root {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .tree-root ul {
+      list-style: none;
+      padding-left: 24px;
+      position: relative;
+    }
+
+    /* Vertical connector lines */
+    .tree-root ul::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 8px;
+      width: 1px;
+      height: calc(100% - 10px);
+      border-left: 1px dashed var(--border-color);
+    }
+
+    .tree-node {
+      position: relative;
+      padding-left: 16px;
+      margin: 6px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    /* Horizontal branch lines */
+    .tree-node::before {
+      content: "";
+      position: absolute;
+      top: 10px;
+      left: -16px;
+      width: 12px;
+      height: 1px;
+      border-top: 1px dashed var(--border-color);
+    }
+
+    .tree-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .folder-name {
+      color: var(--folder-blue);
+      font-weight: 500;
+    }
+
+    .file-name {
+      color: #e5c07b;
+    }
+
+    .tree-comment {
+      color: #5c6370;
+      font-style: italic;
+      margin-left: 12px;
+      font-size: 12px;
+    }
+
+    .info-box {
+      background-color: rgba(9, 10, 15, 0.4);
+      border-left: 3px solid var(--brand-primary);
+      padding: 16px;
+      border-radius: 0 6px 6px 0;
+      margin: 20px 0;
+    }
+
+    .info-box-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .info-box p {
+      margin-bottom: 0;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .footer-note {
+      border-top: 1px solid var(--border-color);
+      margin-top: 32px;
+      padding-top: 16px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="guide-container">
+    <div class="header-block">
+      <h1>Maven Standard Directory Structure</h1>
+      <p class="intro-text">In this lecture, we review the standardized project layouts enforced by Maven, exploring how a unified folder convention eliminates confusion and boosts team cross-compatibility.</p>
+    </div>
+
+    <p>Without a build management system, different development groups often establish conflicting, proprietary internal file paths. This lack of architectural uniformity complicates onboarding processes for new team members. Maven eliminates this completely by mandating a <strong>Standard Directory Structure</strong>.</p>
+
+    <div class="section-title">The Standard Folder Blueprint</div>
+    <p>Whenever you construct or import a standard Maven project ecosystem, it presents the following foundational configuration hierarchy layout:</p>
+
+    <div class="project-tree-container">
+      <ul class="tree-root">
+        <li class="tree-node">
+          <span class="tree-label"><span class="folder-name">my-app/</span></span>
+          <ul>
+            <li class="tree-node">
+              <span class="tree-label"><span class="folder-name">src/</span></span>
+              <ul>
+                <li class="tree-node">
+                  <span class="tree-label"><span class="folder-name">main/</span></span>
+                  <ul>
+                    <li class="tree-node"><span class="tree-label"><span class="folder-name">java/</span> <span class="tree-comment">← Java source code files (.java)</span></span></li>
+                    <li class="tree-node"><span class="tree-label"><span class="folder-name">resources/</span> <span class="tree-comment">← Application configuration files &amp; properties</span></span></li>
+                    <li class="tree-node"><span class="tree-label"><span class="folder-name">webapp/</span> <span class="tree-comment">← Web deployment assets (images, CSS, web.xml)</span></span></li>
+                  </ul>
+                </li>
+                <li class="tree-node">
+                  <span class="tree-label"><span class="folder-name">test/</span></span>
+                  <ul>
+                    <li class="tree-node"><span class="tree-label"><span class="folder-name">java/</span> <span class="tree-comment">← Test engine source code suites (JUnit tests)</span></span></li>
+                    <li class="tree-node"><span class="tree-label"><span class="folder-name">resources/</span> <span class="tree-comment">← Test-specific configuration mock files</span></span></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li class="tree-node"><span class="tree-label"><span class="folder-name">target/</span> <span class="tree-comment">← Destination for compiled binaries and packaged .jar output</span></span></li>
+            <li class="tree-node"><span class="tree-label"><span class="file-name">pom.xml</span> <span class="tree-comment">← Master Maven Configuration Manifest (Dependencies &amp; Plugins)</span></span></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <div class="section-title">Core Benefits of Structural Standardization</div>
+    <p>Adhering to Maven's global conventions introduces massive advantages for enterprise engineering workflows:</p>
+
+    <div class="benefits-grid">
+      <div class="benefit-card">
+        <h3>Instant Developer Onboarding</h3>
+        <p>New engineers can join any real-world codebase and immediately locate source logic, tests, and configurations without searching through customized structures.</p>
+      </div>
+      <div class="benefit-card">
+        <h3>Universal IDE Portability</h3>
+        <p>All modern IDEs (IntelliJ IDEA, Eclipse, NetBeans) natively support Maven blueprints. You can switch editors without risking classpath corruption or setting conflicts.</p>
+      </div>
+      <div class="benefit-card">
+        <h3>Consistent Lifecycles</h3>
+        <p>Compilation outputs are clean and directed straight to the ephemeral <code>target/</code> directory, simplifying automated clean operations and deployment packaging routines.</p>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <div class="info-box-title">Summary of Powerful Maven Capabilities</div>
+      <p><strong>1. Dependency Resolution:</strong> Auto-retrieves remote library packages; avoids missing jar conflicts entirely.</p>
+      <p style="margin-top: 4px;"><strong>2. Dynamic Classpath Tracking:</strong> Builds compile and execution scope boundaries via configuration metadata loops.</p>
+      <p style="margin-top: 4px;"><strong>3. Uniform Environment Formats:</strong> Enforces consistent patterns, allowing you to focus on writing clean business logic instantly.</p>
+    </div>
+
+    <div class="footer-note">
+      Directory structures mastered! In our next module, we will explore the internal anatomy of the foundational <code>pom.xml</code> file.
+    </div>
+  </div>
+
+</body>
+</html>
