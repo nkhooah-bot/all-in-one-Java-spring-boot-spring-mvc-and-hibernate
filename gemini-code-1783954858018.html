@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab: Implementing Actuator Security</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-primary: #34a853;
+      --bg-main: #090a0f;
+      --bg-card: #1c1e29;
+      --border-color: #2e3245;
+      --text-main: #f3f4f6;
+      --text-muted: #8e96aa;
+      --xml-tag: #f92672;
+      --xml-comment: #5c6370;
+      --terminal-bg: #090a0f;
+      --accent-blue: #61afef;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: #14151f;
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      padding: 30px;
+    }
+
+    .guide-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 32px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--brand-primary);
+      margin: 28px 0 12px 0;
+    }
+
+    .code-block {
+      padding: 14px;
+      margin: 12px 0;
+      background-color: var(--terminal-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: #f8f8f2;
+    }
+
+    .lab-steps { list-style-type: none; margin: 20px 0; }
+    .lab-step-item { position: relative; padding-left: 32px; margin-bottom: 20px; font-size: 14px; }
+    .lab-step-number { position: absolute; left: 0; top: 2px; background-color: var(--brand-primary); color: #090a0f; font-weight: 700; font-size: 11px; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+    .browser-mockup { background-color: var(--terminal-bg); border: 1px solid var(--border-color); border-radius: 6px; margin: 16px 0; padding: 20px; text-align: center; }
+    .login-box { display: inline-block; width: 250px; padding: 15px; border: 1px solid var(--border-color); border-radius: 4px; }
+    
+    .footer-note { border-top: 1px solid var(--border-color); margin-top: 32px; padding-top: 16px; text-align: center; color: var(--text-muted); font-size: 13px; }
+  </style>
+</head>
+<body>
+
+  <div class="guide-container">
+    <h1>Lab: Actuator Security Enforcement</h1>
+    <p style="color: var(--text-muted); margin-top: 10px;">Protecting production diagnostic endpoints by integrating the Spring Security starter.</p>
+
+    <div class="section-title">1. Dependency Injection</div>
+    <p>Add the security starter to your <code>pom.xml</code> to enable the automatic credential challenge filter on all Actuator endpoints.</p>
+    <div class="code-block">
+      &lt;<span style="color: var(--xml-tag);">dependency</span>&gt;<br>
+      &nbsp;&nbsp;&lt;<span style="color: var(--xml-tag);">groupId</span>&gt;org.springframework.boot&lt;/<span style="color: var(--xml-tag);">groupId</span>&gt;<br>
+      &nbsp;&nbsp;&lt;<span style="color: var(--xml-tag);">artifactId</span>&gt;spring-boot-starter-security&lt;/<span style="color: var(--xml-tag);">artifactId</span>&gt;<br>
+      &lt;/<span style="color: var(--xml-tag);">dependency</span>&gt;
+    </div>
+
+    <div class="section-title">2. Handling Credentials</div>
+    <p>Upon application startup, examine the terminal console. Spring Boot prints a temporary, randomly generated password that serves as your initial authentication token.</p>
+    
+
+    <div class="section-title">3. Advanced Endpoint Exclusion</div>
+    <p>If specific diagnostic endpoints (e.g., <code>/health</code> or <code>/info</code>) should be blocked entirely, use the <code>exclude</code> property in <code>application.properties</code>:</p>
+    <div class="code-block">
+      <span style="color: var(--xml-comment);"># Blacklisting sensitive endpoints from external access</span><br>
+      management.endpoints.web.exposure.exclude=health,info
+    </div>
+
+    <div class="section-title">4. Lab Verification</div>
+    <ul class="lab-steps">
+      <li class="lab-step-item">
+        <span class="lab-step-number">1</span>
+        <strong>Run the App:</strong> Start the application and copy the generated password from the console log.
+      </li>
+      <li class="lab-step-item">
+        <span class="lab-step-number">2</span>
+        <strong>Test Access:</strong> Navigate to <code>/actuator/mappings</code> in your browser. Note the challenge prompt.
+      </li>
+      <li class="lab-step-item">
+        <span class="lab-step-number">3</span>
+        <strong>Authenticate:</strong> Use username <code>user</code> and the password from your console logs to gain access.
+      </li>
+    </ul>
+
+    <div class="browser-mockup">
+      <div class="login-box">
+        <h3 style="color: #fff; margin-bottom: 10px;">Security Challenge</h3>
+        <input type="text" style="width:100%; margin-bottom:5px; background:#14151f; color:#fff;" placeholder="Username: user">
+        <input type="password" style="width:100%; background:#14151f; color:#fff;" placeholder="Password">
+      </div>
+    </div>
+
+    <div class="footer-note">
+      Actuator security successfully implemented. In future modules, we will advance from these default credentials to database-backed authentication roles.
+    </div>
+  </div>
+</body>
+</html>
