@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Production Monitoring with Spring Boot Actuator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700&family=JetBrains+Mono:wght=400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-primary: #34a853;
+      --bg-main: #090a0f;
+      --bg-card: #1c1e29;
+      --border-color: #2e3245;
+      --text-main: #f3f4f6;
+      --text-muted: #8e96aa;
+      --accent-glow: rgba(52, 168, 83, 0.1);
+      --file-gold: #e5c07b;
+      --xml-tag: #f92672;
+      --xml-comment: #5c6370;
+      --json-key: #ef596f;
+      --json-val: #89ca78;
+      --alert-danger: #ef4444;
+      --danger-glow: rgba(239, 68, 68, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: #14151f; /* Matches academy workspace frame background */
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.6;
+      padding: 30px;
+    }
+
+    .guide-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 32px;
+    }
+
+    .header-block {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+    }
+
+    .header-block h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .intro-text {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--brand-primary);
+      margin: 28px 0 12px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    p {
+      font-size: 14px;
+      color: var(--text-main);
+      margin-bottom: 16px;
+    }
+
+    .code-block {
+      display: block;
+      padding: 14px;
+      margin: 12px 0;
+      overflow-x: auto;
+      line-height: 1.5;
+      background-color: #090a0f;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: #f8f8f2;
+    }
+
+    .coordinate-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+
+    .coordinate-table th, .coordinate-table td {
+      border: 1px solid var(--border-color);
+      padding: 12px;
+      text-align: left;
+    }
+
+    .coordinate-table th {
+      background-color: #090a0f;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .browser-mockup {
+      background-color: #090a0f;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      margin: 16px 0;
+    }
+
+    .browser-bar {
+      background-color: #1c1e29;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border-color);
+      border-radius: 6px 6px 0 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .browser-dots {
+      display: flex;
+      gap: 4px;
+    }
+
+    .browser-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--border-color);
+    }
+
+    .browser-address {
+      background-color: #090a0f;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      padding: 2px 12px;
+      border-radius: 4px;
+      flex-grow: 1;
+      border: 1px solid var(--border-color);
+    }
+
+    .browser-viewport {
+      padding: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: #fff;
+    }
+
+    .info-box {
+      background-color: rgba(9, 10, 15, 0.4);
+      border-left: 3px solid var(--brand-primary);
+      padding: 16px;
+      border-radius: 0 6px 6px 0;
+      margin: 20px 0;
+    }
+
+    .info-box.danger-box {
+      border-left-color: var(--alert-danger);
+      background-color: var(--danger-glow);
+    }
+
+    .info-box-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .danger-box .info-box-title {
+      color: #fca5a5;
+    }
+
+    .info-box p {
+      margin-bottom: 0;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    a {
+      color: var(--brand-primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="guide-container">
+    <div class="header-block">
+      <h1>Spring Boot Actuator</h1>
+      <p class="intro-text">In this lecture, we explore production environment orchestration using Spring Boot Actuator, mapping health diagnostic status checks, and modifying external metrics exposure guidelines.</p>
+    </div>
+
+    <p>Once backend applications transition into live production environments, keeping tabs on system viability, mapping target endpoint pathways, and evaluating running memory configurations becomes critical. **Spring Boot Actuator** solves this by generating built-in, production-ready operational metrics via HTTP REST endpoints—completely code-free.</p>
+
+    <div class="section-title">1. Wiring the Actuator Dependency</div>
+    <p>To inject monitoring capabilities into your build pipeline, register the starter module dependency directly into the <code>&lt;dependencies&gt;</code> block of your project's <code>pom.xml</code> file:</p>
+
+    <div class="code-block">
+        <span style="color: var(--xml-comment); font-style: italic;">&lt;!-- Spring Boot Actuator Monitoring Starter --&gt;</span>
+        &lt;<span style="color: var(--xml-tag);">dependency</span>&gt;
+            &lt;<span style="color: var(--xml-tag);">groupId</span>&gt;org.springframework.boot&lt;/<span style="color: var(--xml-tag);">groupId</span>&gt;
+            &lt;<span style="color: var(--xml-tag);">artifactId</span>&gt;spring-boot-starter-actuator&lt;/<span style="color: var(--xml-tag);">artifactId</span>&gt;
+        &lt;/<span style="color: var(--xml-tag);">dependency</span>&gt;</div>
+
+    <div class="section-title">2. Default Core Actuator Endpoints</div>
+    <p>All out-of-the-box monitoring targets are exposed under the unified routing root path prefix <code>/actuator</code>. By default, **only** the status validation checkpoint endpoint (<code>/actuator/health</code>) is accessible over the web for safety reasons.</p>
+
+    <div class="browser-mockup">
+      <div class="browser-bar">
+        <div class="browser-dots"><div class="browser-dot"></div><div class="browser-dot"></div><div class="browser-dot"></div></div>
+        <div class="browser-address">http://localhost:8080/actuator/health</div>
+      </div>
+      <div class="browser-viewport">
+        {<br>
+        &nbsp;&nbsp;"<span style="color: var(--json-key);">status</span>": "<span style="color: var(--json-val);">UP</span>"<br>
+        }
+      </div>
+    </div>
+
+    <div class="section-title">3. Exposing &amp; Customizing the Info Endpoint</div>
+    <p>To explicitly expose additional endpoints like the custom information block (<code>/actuator/info</code>), you must add target configuration keys inside your <code>src/main/resources/application.properties</code> file:</p>
+
+    <div class="code-block">
+<span style="color: var(--xml-comment); font-style: italic;"># Expose select web endpoints (health and info)</span>
+management.endpoints.web.exposure.include=health,info
+
+<span style="color: var(--xml-comment); font-style: italic;"># Enable data collection from the local environment descriptor block</span>
+management.info.env.enabled=true
+
+<span style="color: var(--xml-comment); font-style: italic;"># Populate custom metadata payloads for the /info endpoint</span>
+info.app.name=Healthy Activities
+info.app.description=This app keeps track of your daily healthy activities.
+info.app.version=3.0.0</div>
+
+    <p>Once saved, targeting your browser to the dynamic path will yield the freshly generated tracking metrics array in clean JSON format:</p>
+
+    <div class="browser-mockup">
+      <div class="browser-bar">
+        <div class="browser-dots"><div class="browser-dot"></div><div class="browser-dot"></div><div class="browser-dot"></div></div>
+        <div class="browser-address">http://localhost:8080/actuator/info</div>
+      </div>
+      <div class="browser-viewport">
+        {<br>
+        &nbsp;&nbsp;"<span style="color: var(--json-key);">app</span>": {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;"<span style="color: var(--json-key);">name</span>": "<span style="color: var(--json-val);">Healthy Activities</span>",<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;"<span style="color: var(--json-key);">description</span>": "<span style="color: var(--json-val);">This app keeps track of your daily healthy activities.</span>",<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;"<span style="color: var(--json-key);">version</span>": "<span style="color: var(--json-val);">3.0.0</span>"<br>
+        &nbsp;&nbsp;}<br>
+        }
+      </div>
+    </div>
+
+    <div class="section-title">4. Mass Endpoint Exposure Index Matrix</div>
+    <p>Spring Boot houses more than ten baseline operational diagnostics dashboards. During production troubleshooting sweeps, engineers can tap into all endpoints concurrently by applying a global wildcard mask (<code>*</code>):</p>
+
+    <div class="code-block">
+<span style="color: var(--xml-comment); font-style: italic;"># DANGER: Opens up all tracking points over the public web context</span>
+management.endpoints.web.exposure.include=*</div>
+
+    <table class="coordinate-table">
+      <thead>
+        <tr>
+          <th style="width: 30%;">Actuator Endpoint</th>
+          <th>Telemetry Scope Provided via JSON Context Response</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>/actuator/health</code></td>
+          <td>Displays application status diagnostics (UP/DOWN thresholds and customizable subsystems).</td>
+        </tr>
+        <tr>
+          <td><code>/actuator/info</code></td>
+          <td>Exposes arbitrary application layer properties bound via <code>info.*</code> property strings.</td>
+        </tr>
+        <tr>
+          <td><code>/actuator/beans</code></td>
+          <td>Generates an absolute structural index list of all active beans registered inside the ApplicationContext container.</td>
+        </tr>
+        <tr>
+          <td><code>/actuator/mappings</code></td>
+          <td>Unpacks a comprehensive architectural roster checklist of all active controller path URI mappings.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="info-box">
+      <div class="info-box-title">Official Actuator Documentation Hub</div>
+      <p>For an absolute matrix reference listing core monitoring configuration properties, explore the complete guide index: <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html" target="_blank">docs.spring.io/spring-boot/actuator</a>.</p>
+    </div>
+
+    <div class="info-box danger-box">
+      <div class="info-box-title">Critical Production Security Notice</div>
+      <p>Exposing structural maps like bean registries, operational mappings, or stack traces via the wildcard token (<code>*</code>) reveals your backend architecture to the public web. In upcoming modules, we will wrap these monitoring ports with <strong>Spring Security</strong> to enforce credential authorization checks.</p>
+    </div>
+
+    <div class="footer-note">
+      Actuator configuration concepts mapped! In our next coding laboratory session, we will open up our IDE workspace console to live-test metrics collection graphs.
+    </div>
+  </div>
+
+</body>
+</html>
