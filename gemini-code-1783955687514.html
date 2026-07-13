@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab: Injecting Custom Application Properties</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-primary: #34a853;
+      --bg-card: #1c1e29;
+      --border-color: #2e3245;
+      --text-main: #f3f4f6;
+      --java-anno: #d19a66;
+      --java-keyword: #c678dd;
+      --java-string: #98c379;
+    }
+
+    body { background-color: #14151f; color: var(--text-main); font-family: 'Plus Jakarta Sans', sans-serif; padding: 30px; }
+    .guide-container { max-width: 800px; margin: 0 auto; background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 32px; }
+    .section-title { font-size: 16px; font-weight: 700; color: var(--brand-primary); margin: 28px 0 12px 0; }
+    .code-block { padding: 14px; margin: 12px 0; background-color: #090a0f; border: 1px solid var(--border-color); border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #f8f8f2; }
+    .lab-steps { list-style-type: none; margin: 20px 0; }
+    .lab-step-item { position: relative; padding-left: 32px; margin-bottom: 20px; font-size: 14px; }
+    .lab-step-number { position: absolute; left: 0; top: 2px; background-color: var(--brand-primary); color: #090a0f; font-weight: 700; font-size: 11px; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  </style>
+</head>
+<body>
+
+  <div class="guide-container">
+    <h1>Coding Lab: Custom Property Injection</h1>
+    <p style="color: #8e96aa;">In this hands-on session, we define custom configuration values and bridge them into our REST controller using the <code>@Value</code> annotation.</p>
+
+    <div class="section-title">1. Define Custom Properties</div>
+    <p>Navigate to <code>src/main/resources/application.properties</code> and add your key-value pairs:</p>
+    <div class="code-block">
+      instructor.name=John Smith<br>
+      student.class=Java Class J02
+    </div>
+
+    <div class="section-title">2. Inject & Expose via REST</div>
+    <p>Update your <code>SimpleRestController.java</code> to bind these properties to class fields and expose them via a new <code>/classinfo</code> endpoint.</p>
+    <div class="code-block">
+<span style="color: var(--java-anno);">@Value</span>(<span style="color: var(--java-string);">"${instructor.name}"</span>)<br>
+<span style="color: var(--java-keyword);">private</span> String instructorName;<br><br>
+<span style="color: var(--java-anno);">@Value</span>(<span style="color: var(--java-string);">"${student.class}"</span>)<br>
+<span style="color: var(--java-keyword);">private</span> String studentClass;<br><br>
+<span style="color: var(--java-anno);">@GetMapping</span>(<span style="color: var(--java-string);">"/classinfo"</span>)<br>
+<span style="color: var(--java-keyword);">public</span> String <span style="color: #61afef;">getClassInfo</span>() {<br>
+&nbsp;&nbsp;<span style="color: var(--java-keyword);">return</span> <span style="color: var(--java-string);">"Instructor: "</span> + instructorName + <span style="color: var(--java-string);">", Class: "</span> + studentClass;<br>
+}
+    </div>
+
+    <div class="section-title">3. Execution & Verification</div>
+    <ul class="lab-steps">
+      <li class="lab-step-item">
+        <span class="lab-step-number">1</span>
+        <strong>Launch:</strong> Run your Spring Boot application.
+      </li>
+      <li class="lab-step-item">
+        <span class="lab-step-number">2</span>
+        <strong>Navigate:</strong> Access <code>http://localhost:8080/classinfo</code> in your browser.
+      </li>
+      <li class="lab-step-item">
+        <span class="lab-step-number">3</span>
+        <strong>Authenticate:</strong> Use your Spring Security credentials (username <code>user</code> and the password from your terminal console).
+      </li>
+    </ul>
+
+    <p><strong>Browser Output:</strong> <code>Instructor: John Smith, Class: Java Class J02</code></p>
+    
+    <p style="margin-top:20px; font-style: italic; color: #8e96aa;">Spring Boot automatically detects the file, parses the keys, and performs the dependency injection at runtime—zero manual parsing required.</p>
+  </div>
+</body>
+</html>
