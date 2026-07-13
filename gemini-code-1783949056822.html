@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guide: Spring Boot Initializr &amp; Maven Basics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --brand-primary: #34a853;
+      --brand-glow: rgba(52, 168, 83, 0.15);
+      --bg-main: #090a0f;
+      --bg-card: #12131a;
+      --bg-code: #1c1e29;
+      --border-color: #2e3245;
+      --text-main: #f3f4f6;
+      --text-muted: #8e96aa;
+      --accent-blue: #3b82f6;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.6;
+      padding: 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #fff;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 12px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-top: 32px;
+      margin-bottom: 16px;
+      color: var(--brand-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    p {
+      color: var(--text-main);
+      margin-bottom: 16px;
+      font-size: 15px;
+    }
+
+    .meta-callout {
+      background-color: var(--bg-card);
+      border-left: 4px solid var(--brand-primary);
+      padding: 16px;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 24px;
+    }
+
+    .meta-callout a {
+      color: var(--brand-primary);
+      text-decoration: none;
+      font-weight: 600;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .meta-callout a:hover {
+      text-decoration: underline;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 600px) {
+      .grid-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .card h3 {
+      font-size: 16px;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    ol, ul {
+      margin-left: 20px;
+      margin-bottom: 16px;
+      color: var(--text-main);
+      font-size: 15px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    .code-container {
+      background-color: var(--bg-code);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .code-header {
+      background-color: var(--bg-card);
+      padding: 10px 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    pre {
+      padding: 16px;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13.5px;
+      color: #e5e7eb;
+    }
+
+    .keyword { color: #ff79c6; }
+    .annotation { color: #f1fa8c; }
+    .class-name { color: #8be9fd; }
+    .string { color: #50fa7b; }
+    .comment { color: #6272a4; font-style: italic; }
+
+    .badge {
+      display: inline-block;
+      background-color: var(--brand-glow);
+      color: var(--brand-primary);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+    }
+
+    .alert-box {
+      background-color: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      padding: 14px;
+      border-radius: 6px;
+      margin-top: 16px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Spring Boot Initializr &amp; Maven Workflow</h1>
+  
+  <div class="meta-callout">
+    <strong>Target Web Platform:</strong> 
+    <a href="https://start.spring.io" target="_blank">start.spring.io</a>
+  </div>
+
+  <p>
+    This guide demonstrates how to configure, download, and import an enterprise-ready project structure using the Spring Initializr tool ecosystem alongside Apache Maven dependency architectures.
+  </p>
+
+  <h2>1. Understanding the Core Architectural Concepts</h2>
+  <div class="grid-container">
+    <div class="card">
+      <h3>Spring Initializr</h3>
+      <p>A web framework aggregator designed to securely generate rapid metadata initial configurations, generating optimized bootable zip files preconfigured with specific platform targets.</p>
+    </div>
+    <div class="card">
+      <h3>Apache Maven</h3>
+      <p>Your automated build assistant tool. Instead of manually seeking individual <code>.jar</code> resources over network classpaths, declarations within the configuration automate local workspace imports.</p>
+    </div>
+  </div>
+
+  <h2>2. Project Specification Settings</h2>
+  <p>When provisioning your runtime package template directly inside the web dashboard environment, align metadata precisely using these configuration parameters:</p>
+  <ul>
+    <li><strong>Project Automation Profile:</strong> Select <span class="badge">Maven Project</span></li>
+    <li><strong>Target Base Language:</strong> Select <span class="badge">Java</span></li>
+    <li><strong>Spring Boot Framework Version:</strong> Choose the latest stable production release version. <em>(Avoid unstable Snapshot/Alpha releases)</em>.</li>
+    <li><strong>Group Metadata Specification:</strong> <code>com.example.springboot.demo</code></li>
+    <li><strong>Artifact Identity Identifier (Application Name):</strong> <code>myapp</code></li>
+    <li><strong>Dependencies Package Matrix:</strong> Add <span class="badge">Spring Web</span> <em>(Bundles embedded Apache Tomcat infrastructure and Spring MVC frameworks)</em></li>
+  </ul>
+
+  <h2>3. Workspace Initialization Pipeline</h2>
+  <ol>
+    <li>Trigger compilation by clicking the <strong>Generate Project</strong> boundary component down on the bottom browser section.</li>
+    <li>Locate the target archive payload file (<code>myapp.zip</code>) inside the localized device downloads route directory.</li>
+    <li>Extract/Unzip the workspace contents cleanly. Move the base directory into your permanent local project working workspace folder.</li>
+    <li>Boot up your IDE (IntelliJ IDEA, Eclipse, or NetBeans), select <strong>Open / Import Project</strong>, and select your extracted directory route. Check the <strong>Trust Project</strong> context option if prompted.</li>
+  </ol>
+
+  <h2>4. Analyzing Code Base Anchors</h2>
+  <p>Once initialization scripts settle download caches completely, navigate to the source directory to locate your bootstrap engine entrypoint file:</p>
+
+  <div class="code-container">
+    <div class="code-header">
+      <span>src/main/java/com/example/springboot/demo/MyappApplication.java</span>
+      <span class="badge">Java Engine Entry</span>
+    </div>
+    <pre><code><span class="keyword">package</span> com.example.springboot.demo;
+
+<span class="keyword">import</span> org.springframework.boot.SpringApplication;
+<span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;
+
+<span class="annotation">@SpringBootApplication</span> <span class="comment">// Declares this as an active Spring Boot Context</span>
+<span class="keyword">public class</span> <span class="class-name">MyappApplication</span> {
+
+    <span class="keyword">public static void</span> main(<span class="class-name">String</span>[] args) {
+        <span class="comment">// Bootstraps and spins up your integrated Tomcat context engine container</span>
+        <span class="class-name">SpringApplication</span>.run(<span class="class-name">MyappApplication</span>.<span class="keyword">class</span>, args);
+    }
+}</code></pre>
+  </div>
+
+  <h2>5. Troubleshooting Application Run Options</h2>
+  <p>If you encounter an unindexed workspace where the runtime play button components fail to render properly on your first project load in IntelliJ IDEA, use the context routing fix below:</p>
+  
+  <div class="alert-box">
+    <strong>IntelliJ Source Synchronization Mapping Alert:</strong><br>
+    Right-click directly over the root <code>src</code> module system container folder inside the Project structure hierarchy view tree selection window &rarr; navigate downwards to locate <strong>Mark Directory as</strong> &rarr; click on <strong>Sources Root</strong> to manually synchronize project definitions.
+  </div>
+
+</body>
+</html>
