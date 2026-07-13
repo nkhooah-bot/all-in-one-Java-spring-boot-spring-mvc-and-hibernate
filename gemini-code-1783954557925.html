@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Securing Spring Boot Actuator Endpoints</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700&family=JetBrains+Mono:wght=400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-primary: #34a853;
+      --bg-main: #090a0f;
+      --bg-card: #1c1e29;
+      --border-color: #2e3245;
+      --text-main: #f3f4f6;
+      --text-muted: #8e96aa;
+      --accent-glow: rgba(52, 168, 83, 0.1);
+      --file-gold: #e5c07b;
+      --xml-tag: #f92672;
+      --xml-comment: #5c6370;
+      --alert-danger: #ef4444;
+      --danger-glow: rgba(239, 68, 68, 0.05);
+      --security-blue: #61afef;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: #14151f; /* Matches academy workspace frame background */
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.6;
+      padding: 30px;
+    }
+
+    .guide-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 32px;
+    }
+
+    .header-block {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+    }
+
+    .header-block h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .intro-text {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--brand-primary);
+      margin: 28px 0 12px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    p {
+      font-size: 14px;
+      color: var(--text-main);
+      margin-bottom: 16px;
+    }
+
+    .code-block {
+      display: block;
+      padding: 14px;
+      margin: 12px 0;
+      overflow-x: auto;
+      line-height: 1.5;
+      background-color: #090a0f;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: #f8f8f2;
+    }
+
+    .browser-mockup {
+      background-color: #090a0f;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      margin: 16px 0;
+    }
+
+    .browser-bar {
+      background-color: #1c1e29;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border-color);
+      border-radius: 6px 6px 0 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .browser-dots {
+      display: flex;
+      gap: 4px;
+    }
+
+    .browser-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--border-color);
+    }
+
+    .browser-address {
+      background-color: #090a0f;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      padding: 2px 12px;
+      border-radius: 4px;
+      flex-grow: 1;
+      border: 1px solid var(--border-color);
+    }
+
+    .browser-viewport {
+      padding: 24px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .login-form-mock {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 20px;
+      width: 280px;
+      font-family: sans-serif;
+    }
+
+    .login-form-mock h3 {
+      font-size: 15px;
+      color: #fff;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .login-input {
+      width: 100%;
+      padding: 6px 8px;
+      background-color: #090a0f;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      margin-bottom: 10px;
+      color: #fff;
+      font-size: 12px;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 8px;
+      background-color: var(--security-blue);
+      border: none;
+      color: #fff;
+      font-weight: 600;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: not-allowed;
+    }
+
+    .info-box {
+      background-color: rgba(9, 10, 15, 0.4);
+      border-left: 3px solid var(--brand-primary);
+      padding: 16px;
+      border-radius: 0 6px 6px 0;
+      margin: 20px 0;
+    }
+
+    .info-box.danger-box {
+      border-left-color: var(--alert-danger);
+      background-color: var(--danger-glow);
+    }
+
+    .info-box-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .danger-box .info-box-title {
+      color: #fca5a5;
+    }
+
+    .info-box p {
+      margin-bottom: 0;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .footer-note {
+      border-top: 1px solid var(--border-color);
+      margin-top: 32px;
+      padding-top: 16px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="guide-container">
+    <div class="header-block">
+      <h1>Securing Spring Boot Actuator Endpoints</h1>
+      <p class="intro-text">In this lecture, we integrate Spring Security to isolate diagnostic dashboards behind an authenticated security filter layer and manage endpoint exclusions.</p>
+    </div>
+
+    <p>Exposing detailed metrics like active container beans (<code>/actuator/beans</code>) or request path configurations (<code>/actuator/mappings</code>) presents a severe vulnerability if left open to the anonymous public web. To close this loophole, we map a security filter grid across all monitoring endpoints.</p>
+
+    <div class="section-title">1. Adding the Spring Security Dependency</div>
+    <p>To drop a security wall over your workspace instantly, add the security starter directly within the <code>&lt;dependencies&gt;</code> layout of your <code>pom.xml</code> file:</p>
+
+    <div class="code-block">
+        <span style="color: var(--xml-comment); font-style: italic;">&lt;!-- Secure Infrastructure Filter Starter Module --&gt;</span>
+        &lt;<span style="color: var(--xml-tag);">dependency</span>&gt;
+            &lt;<span style="color: var(--xml-tag);">groupId</span>&gt;org.springframework.boot&lt;/<span style="color: var(--xml-tag);">groupId</span>&gt;
+            &lt;<span style="color: var(--xml-tag);">artifactId</span>&gt;spring-boot-starter-security&lt;/<span style="color: var(--xml-tag);">artifactId</span>&gt;
+        &lt;/<span style="color: var(--xml-tag);">dependency</span>&gt;</div>
+
+    <div class="section-title">2. Intercepting Anonymous Access Requests</div>
+    <p>Once the library resolves, attempting to reach any sensitive endpoint over the web triggers an explicit interception chain. Spring Security redirects unauthenticated threads to an integrated challenge login form:</p>
+
+    
+
+    <div class="browser-mockup">
+      <div class="browser-bar">
+        <div class="browser-dots"><div class="browser-dot"></div><div class="browser-dot"></div><div class="browser-dot"></div></div>
+        <div class="browser-address">http://localhost:8080/actuator/beans</div>
+      </div>
+      <div class="browser-viewport">
+        <div class="login-form-mock">
+          <h3>Sign In</h3>
+          <input type="text" class="login-input" placeholder="Username" value="user" readonly>
+          <input type="password" class="login-input" placeholder="Password" value="••••••••••••••••" readonly>
+          <button class="login-btn">Sign In</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <div class="info-box-title">Isolating Default Generated Credentials</div>
+      <p>By default, Spring Security maps a core user titled <code>user</code>. The associated random security password string is generated dynamically during the application startup process and outputted inside your terminal console window.</p>
+    </div>
+
+    <div class="section-title">3. Overriding Identity Properties</div>
+    <p>To avoid mining log streams for temporary password strings during local cycles, you can cleanly override and define explicit environment identities within your active <code>application.properties`</code> engine file:</p>
+
+    <div class="code-block">
+<span style="color: var(--xml-comment); font-style: italic;"># Overriding default spring infrastructure credential profiles</span>
+spring.security.user.name=John
+spring.security.user.password=Smith</div>
+
+    <div class="section-title">4. Blacklisting and Excluding Endpoints Explicitly</div>
+    <p>If your governance topology dictates that specific diagnostic layers must be disabled completely regardless of user credentials, you can blacklist individual endpoints using the <code>exclude</code> configuration key:</p>
+
+    <div class="code-block">
+<span style="color: var(--xml-comment); font-style: italic;"># Expose wide endpoints but explicitly disable health and info checks completely</span>
+management.endpoints.web.exposure.include=*
+management.endpoints.web.exposure.exclude=health,info</div>
+
+    <div class="info-box danger-box">
+      <div class="info-box-title">Production Environment Guardrail</div>
+      <p>While hardcoding standard passwords inside application files works perfectly for standalone learning blocks, enterprise systems must tie authentication routines to a security database instance utilizing active password hashing algorithms (e.g., BCrypt). We will explore advanced custom database authentication later in this course.</p>
+    </div>
+
+    <div class="footer-note">
+      Security concepts established! In our upcoming coding laboratory session, we will open up our workspace to live-test this security framework.
+    </div>
+  </div>
+
+</body>
+</html>
