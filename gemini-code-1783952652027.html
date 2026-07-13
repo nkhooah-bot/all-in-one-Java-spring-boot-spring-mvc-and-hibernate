@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Understanding the pom.xml File &amp; Core Maven Concepts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-primary: #34a853;
+      --bg-main: #090a0f;
+      --bg-card: #1c1e29;
+      --border-color: #2e3245;
+      --text-main: #f3f4f6;
+      --text-muted: #8e96aa;
+      --accent-glow: rgba(52, 168, 83, 0.1);
+      --xml-tag: #f92672;
+      --xml-attr: #a6e22e;
+      --xml-str: #e6db74;
+      --xml-comment: #5c6370;
+      --node-blue: #60a5fa;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: #14151f;
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.6;
+      padding: 30px;
+    }
+
+    .guide-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 32px;
+    }
+
+    .header-block {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+    }
+
+    .header-block h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .intro-text {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--brand-primary);
+      margin: 28px 0 12px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    p {
+      font-size: 14px;
+      color: var(--text-main);
+      margin-bottom: 16px;
+    }
+
+    .coordinate-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+
+    .coordinate-table th, .coordinate-table td {
+      border: 1px solid var(--border-color);
+      padding: 12px;
+      text-align: left;
+    }
+
+    .coordinate-table th {
+      background-color: #090a0f;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    /* XML Tag Tree Layout Component */
+    .xml-tree-container {
+      background-color: #090a0f;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 24px;
+      margin: 20px 0;
+      overflow-x: auto;
+    }
+
+    .tree-root {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .tree-root ul {
+      list-style: none;
+      padding-left: 28px;
+      position: relative;
+    }
+
+    .tree-root ul::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 8px;
+      width: 1px;
+      height: calc(100% - 12px);
+      border-left: 1px dashed var(--border-color);
+    }
+
+    .tree-node {
+      position: relative;
+      padding-left: 16px;
+      margin: 6px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .tree-node::before {
+      content: "";
+      position: absolute;
+      top: 10px;
+      left: -20px;
+      width: 16px;
+      height: 1px;
+      border-top: 1px dashed var(--border-color);
+    }
+
+    .tag-accent {
+      color: var(--xml-tag);
+      font-weight: 500;
+    }
+
+    .text-content {
+      color: var(--text-main);
+    }
+
+    .comment-text {
+      color: var(--xml-comment);
+      font-style: italic;
+    }
+
+    .info-box {
+      background-color: rgba(9, 10, 15, 0.4);
+      border-left: 3px solid var(--brand-primary);
+      padding: 16px;
+      border-radius: 0 6px 6px 0;
+      margin: 20px 0;
+    }
+
+    .info-box-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .info-box p {
+      margin-bottom: 0;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .footer-note {
+      border-top: 1px solid var(--border-color);
+      margin-top: 32px;
+      padding-top: 16px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="guide-container">
+    <div class="header-block">
+      <h1>Understanding the pom.xml File</h1>
+      <p class="intro-text">In this lecture, we explore the core concepts of Maven's main configuration manifest: the Project Object Model (POM) file, its architectural components, and project coordination frameworks.</p>
+    </div>
+
+    <p>The <strong>POM (Project Object Model)</strong> file serves as the master configuration manifest for your entire build architecture. This XML descriptor outlines project identifiers, plugin management tasks, and the absolute checklist of dependency requirements given to Maven.</p>
+
+    <div class="section-title">Anatomy of a POM File</div>
+    <table class="coordinate-table">
+      <thead>
+        <tr>
+          <th style="width: 25%;">Section Block</th>
+          <th>Description and Functionality Context</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Project Metadata</strong></td>
+          <td>Identifies your project uniquely on a global scope (Group ID, Artifact ID, Version).</td>
+        </tr>
+        <tr>
+          <td><strong>Dependencies</strong></td>
+          <td>The definitive checklist of external library framework jars your code relies on.</td>
+        </tr>
+        <tr>
+          <td><strong>Plugins</strong></td>
+          <td>Configures background build execution tasks and automated lifecycle behaviors.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="section-title">Visual Object Hierarchy Structure</div>
+    <p>Below is the structured relational breakdown of your <code>pom.xml</code> dependencies block visualized as an explicit node hierarchy tree layout:</p>
+
+    <div class="xml-tree-container">
+      <ul class="tree-root">
+        <li class="tree-node">
+          <span class="tag-accent">&lt;project&gt;</span>
+          <ul>
+            <li class="tree-node"><span class="tag-accent">&lt;modelVersion&gt;</span><span class="text-content">4.0.0</span><span class="tag-accent">&lt;/modelVersion&gt;</span></li>
+            
+            <li class="tree-node">
+              <span class="comment-text">&lt;!-- Project Metadata Coordinates --&gt;</span>
+            </li>
+            <li class="tree-node"><span class="tag-accent">&lt;groupId&gt;</span><span class="text-content">com.example.springboot.demo</span><span class="tag-accent">&lt;/groupId&gt;</span></li>
+            <li class="tree-node"><span class="tag-accent">&lt;artifactId&gt;</span><span class="text-content">my-app</span><span class="tag-accent">&lt;/artifactId&gt;</span></li>
+            <li class="tree-node"><span class="tag-accent">&lt;version&gt;</span><span class="text-content">1.0.0</span><span class="tag-accent">&lt;/version&gt;</span></li>
+            
+            <li class="tree-node">
+              <span class="tag-accent">&lt;dependencies&gt;</span>
+              <ul>
+                <li class="tree-node">
+                  <span class="comment-text">&lt;!-- Core Hibernate Framework ORM Engine --&gt;</span>
+                </li>
+                <li class="tree-node">
+                  <span class="tag-accent">&lt;dependency&gt;</span>
+                  <ul>
+                    <li class="tree-node"><span class="tag-accent">&lt;groupId&gt;</span><span class="text-content">org.hibernate</span><span class="tag-accent">&lt;/groupId&gt;</span></li>
+                    <li class="tree-node"><span class="tag-accent">&lt;artifactId&gt;</span><span class="text-content">hibernate-core</span><span class="tag-accent">&lt;/artifactId&gt;</span></li>
+                    <li class="tree-node"><span class="tag-accent">&lt;version&gt;</span><span class="text-content">6.2.0.Final</span><span class="tag-accent">&lt;/version&gt;</span></li>
+                  </ul>
+                  <span class="tag-accent">&lt;/dependency&gt;</span>
+                </li>
+              </ul>
+              <span class="tag-accent">&lt;/dependencies&gt;</span>
+            </li>
+          </ul>
+          <span class="tag-accent">&lt;/project&gt;</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="info-box">
+      <div class="info-box-title">DevOps Best Practice Rule</div>
+      <p>Explicit version binding inside target declarations guarantees environment stability, ensuring builds strictly match what was tested and validated through your CI/CD pipelines.</p>
+    </div>
+
+    <div class="footer-note">
+      POM configuration concepts complete! In our upcoming lessons, we will inspect the execution phases of the Maven lifecycle engine.
+    </div>
+  </div>
+
+</body>
+</html>
