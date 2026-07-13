@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Creating Your First REST Controller</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-primary: #34a853;
+      --bg-main: #090a0f;
+      --bg-card: #1c1e29;
+      --border-color: #2e3245;
+      --text-main: #f3f4f6;
+      --text-muted: #8e96aa;
+      --accent-glow: rgba(52, 168, 83, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: #14151f; /* Matches workspace frame background */
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.6;
+      padding: 30px;
+    }
+
+    .guide-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 32px;
+    }
+
+    .header-block {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+    }
+
+    .header-block h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .intro-text {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--brand-primary);
+      margin: 28px 0 12px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    p {
+      font-size: 14px;
+      color: var(--text-main);
+      margin-bottom: 16px;
+    }
+
+    .step-list {
+      list-style-type: none;
+      margin-bottom: 20px;
+    }
+
+    .step-item {
+      position: relative;
+      padding-left: 32px;
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+
+    .step-number {
+      position: absolute;
+      left: 0;
+      top: 2px;
+      width: 20px;
+      height: 20px;
+      background-color: var(--accent-glow);
+      border: 1px solid var(--brand-primary);
+      color: var(--brand-primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      background-color: rgba(9, 10, 15, 0.6);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #e5c07b;
+      font-size: 13px;
+    }
+
+    .code-block {
+      display: block;
+      padding: 14px;
+      margin: 12px 0;
+      overflow-x: auto;
+      line-height: 1.5;
+      background-color: #090a0f;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+    }
+
+    .info-box {
+      background-color: rgba(9, 10, 15, 0.4);
+      border-left: 3px solid var(--brand-primary);
+      padding: 16px;
+      border-radius: 0 6px 6px 0;
+      margin: 20px 0;
+    }
+
+    .info-box-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .info-box p {
+      margin-bottom: 0;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .footer-note {
+      border-top: 1px solid var(--border-color);
+      margin-top: 32px;
+      padding-top: 16px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="guide-container">
+    <div class="header-block">
+      <h1>Creating Your First REST Controller</h1>
+      <p class="intro-text">In this module, we will replace the default Spring Boot Whitelabel error page by implementing a simple REST controller endpoint that returns a custom string response directly to the browser view.</p>
+    </div>
+
+    <p>Currently, running the server shows an error page at <code>localhost:8080</code> because no custom route mapping has been explicitly built. Before adding new code files, ensure your server is stopped by clicking the <strong>Red Square Button</strong> in your IDE console.</p>
+
+    <div class="section-title">Step 1: Create a New Sub-package</div>
+    <ul class="step-list">
+      <li class="step-item">
+        <span class="step-number">1</span>
+        Inside your project file structure navigation tree, locate your root code package location: <code>src/main/java/com/example/springboot/demo</code>.
+      </li>
+      <li class="step-item">
+        <span class="step-number">2</span>
+        Right-click on the package folder, select <strong>New -> Package</strong>.
+      </li>
+      <li class="step-item">
+        <span class="step-number">3</span>
+        Name your child directory suffix package target extension: <code>rest</code>. 
+        <em>(The absolute structural context pathway expands to <code>com.example.springboot.demo.rest</code>)</em>.
+      </li>
+    </ul>
+
+    <div class="section-title">Step 2: Define the REST Controller Blueprint</div>
+    <ul class="step-list">
+      <li class="step-item">
+        <span class="step-number">1</span>
+        Right-click on your new <code>rest</code> package, select <strong>New -> Java Class</strong>.
+      </li>
+      <li class="step-item">
+        <span class="step-number">2</span>
+        Name the file structure entry layout: <code>SimpleRestController</code>.
+      </li>
+      <li class="step-item">
+        <span class="step-number">3</span>
+        Populate the empty template container interface by writing the tracking code parameters precisely as shown below:
+      </li>
+    </ul>
+
+    <code class="code-block">
+<span style="color: #c678dd;">package</span> <span style="color: #e5c07b;">com.example.springboot.demo.rest</span>;
+
+<span style="color: #c678dd;">import</span> <span style="color: #e5c07b;">org.springframework.web.bind.annotation.GetMapping</span>;
+<span style="color: #c678dd;">import</span> <span style="color: #e5c07b;">org.springframework.web.bind.annotation.RestController</span>;
+
+<span style="color: #c678dd;">@RestController</span>
+<span style="color: #c678dd;">public class</span> <span style="color: #e5c07b;">SimpleRestController</span> {
+
+    <span style="color: #5c6370; font-style: italic;">// Expose a "/" endpoint that returns "my application"</span>
+    <span style="color: #c678dd;">@GetMapping</span>(<span style="color: #9ece6a;">"/"</span>)
+    <span style="color: #c678dd;">public</span> <span style="color: #e5c07b;">String</span> <span style="color: #61afef;">app</span>() {
+        <span style="color: #c678dd;">return</span> <span style="color: #9ece6a;">"my application"</span>;
+    }
+}
+    </code>
+
+    <div class="info-box">
+      <div class="info-box-title">Key Annotations Explained</div>
+      <p><code>@RestController</code>: Tells Spring Boot that this class is a web controller capable of handling incoming web requests and converting returned data bodies directly into clean web responses.</p>
+      <p style="margin-top: 6px;"><code>@GetMapping("/")</code>: Listens for standard HTTP GET requests hitting the root directory context line of your application host portal.</p>
+    </div>
+
+    <div class="section-title">Step 3: Launch and Verify Endpoint Lifecycle Hooks</div>
+    <ul class="step-list">
+      <li class="step-item">
+        <span class="step-number">1</span>
+        Re-run the main framework engine by executing your primary class loader launcher file (<code>MyappApplication.java</code>).
+      </li>
+      <li class="step-item">
+        <span class="step-number">2</span>
+        Open a web browser tab context frame and visit your local testing portal: <a href="http://localhost:8080" target="_blank" style="color: var(--brand-primary); text-decoration: none; font-weight: 600;">http://localhost:8080</a>.
+      </li>
+      <li class="step-item">
+        <span class="step-number">3</span>
+        Verify that the default Whitelabel Error message layout has been replaced with the plaintext output string: <code>my application</code>.
+      </li>
+    </ul>
+
+    <div class="footer-note">
+      Success! Your Spring Boot ecosystem is now actively listening to requests and dynamically sending response payloads back to clients.
+    </div>
+  </div>
+
+</body>
+</html>
