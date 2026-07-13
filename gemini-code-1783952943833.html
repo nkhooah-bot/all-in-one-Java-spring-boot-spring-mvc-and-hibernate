@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Application Properties &amp; Static Content Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-primary: #34a853;
+      --bg-main: #090a0f;
+      --bg-card: #1c1e29;
+      --border-color: #2e3245;
+      --text-main: #f3f4f6;
+      --text-muted: #8e96aa;
+      --accent-glow: rgba(52, 168, 83, 0.1);
+      --file-gold: #e5c07b;
+      --java-anno: #d19a66;
+      --java-keyword: #c678dd;
+      --java-string: #98c379;
+      --alert-danger: #ef4444;
+      --danger-glow: rgba(239, 68, 68, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: #14151f; /* Matches academy workspace frame background */
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.6;
+      padding: 30px;
+    }
+
+    .guide-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 32px;
+    }
+
+    .header-block {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+    }
+
+    .header-block h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .intro-text {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--brand-primary);
+      margin: 28px 0 12px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    p {
+      font-size: 14px;
+      color: var(--text-main);
+      margin-bottom: 16px;
+    }
+
+    .code-block {
+      display: block;
+      padding: 14px;
+      margin: 12px 0;
+      overflow-x: auto;
+      line-height: 1.5;
+      background-color: #090a0f;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: #f8f8f2;
+    }
+
+    .info-box {
+      background-color: rgba(9, 10, 15, 0.4);
+      border-left: 3px solid var(--brand-primary);
+      padding: 16px;
+      border-radius: 0 6px 6px 0;
+      margin: 20px 0;
+    }
+
+    .info-box.danger-box {
+      border-left-color: var(--alert-danger);
+      background-color: var(--danger-glow);
+    }
+
+    .info-box-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .danger-box .info-box-title {
+      color: #fca5a5;
+    }
+
+    .info-box p {
+      margin-bottom: 0;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      background-color: rgba(9, 10, 15, 0.6);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--file-gold);
+      font-size: 13px;
+    }
+
+    .footer-note {
+      border-top: 1px solid var(--border-color);
+      margin-top: 32px;
+      padding-top: 16px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="guide-container">
+    <div class="header-block">
+      <h1>Application Properties &amp; Static Assets</h1>
+      <p class="intro-text">In this lecture, we explore environment configuration tuning via application.properties, property value injection using @Value, and alternative asset routing patterns.</p>
+    </div>
+
+    <p>By default, a Spring Boot application automatically evaluates externalized initialization properties out of a dedicated environment entry file called <code>application.properties</code>, located inside your <code>src/main/resources/</code> folder directory.</p>
+
+    <div class="section-title">1. Setting Properties &amp; Value Injection</div>
+    <p>While generated completely empty by Spring Initializr, you can populate this manifest with built-in framework keys (such as changing the default server listening port) or append custom property key-value pairs:</p>
+
+    <div class="code-block">
+<span style="color: #5c6370; font-style: italic;"># Customizing the server port environment variable</span>
+server.port=7070
+
+<span style="color: #5c6370; font-style: italic;"># Defining custom corporate property boundaries</span>
+instructor.name=John Doe
+class.name=Java Masterclass</div>
+
+    <p>To pull these custom values out of your properties payload and assign them directly into a REST Controller instance, use the spring-managed <code>@Value</code> annotation combined with standard <code>${property.key}</code> expression wrappers:</p>
+
+    
+
+    <div class="code-block">
+<span style="color: var(--java-anno);">@RestController</span>
+<span style="color: var(--java-keyword);">public class</span> <span style="color: #61afef;">DemoController</span> {
+
+    <span style="color: var(--java-anno);">@Value</span>(<span style="color: var(--java-string);">"${instructor.name}"</span>)
+    <span style="color: var(--java-keyword);">private</span> String instructorName;
+
+    <span style="color: var(--java-anno);">@Value</span>(<span style="color: var(--java-string);">"${class.name}"</span>)
+    <span style="color: var(--java-keyword);">private</span> String className;
+
+    <span style="color: var(--java-anno);">@GetMapping</span>(<span style="color: var(--java-string);">"/info"</span>)
+    <span style="color: var(--java-keyword);">public</span> String <span style="color: #61afef;">getDetails</span>() {
+        <span style="color: var(--java-keyword);">return</span> <span style="color: var(--java-string);">"Course: "</span> + className + <span style="color: var(--java-string);">" | Instructor: "</span> + instructorName;
+    }
+}</div>
+
+    <div class="section-title">2. Handling Static Content &amp; The Webapp Pitfall</div>
+    <p>For rendering assets such as static images, custom CSS sheets, web scripts, or PDFs, Spring Boot automatically configures an internal static resource mapping directory pointing directly to <code>src/main/resources/static/</code>.</p>
+
+    <div class="info-box danger-box">
+      <div class="info-box-title">Critical Warning: Avoid src/main/webapp</div>
+      <p>Although <code>src/main/webapp</code> is a legacy standard directory structure folder for general Maven web apps, it <strong>only</strong> resolves properly when your project uses <code>.war</code> packaging deployment builds. If your app targets a standard executable embedded standalone <code>.jar</code>, build engines skip this path entirely. Utilizing it will lead to broken links and hours of debugging.</p>
+    </div>
+
+    <div class="section-title">3. Baseline Testing Frameworks</div>
+    <p>The initialization engine also provisions a basic smoke test stub under <code>src/test/java/</code>. It contains a standard boilerplate layout designed to verify that the target Spring ApplicationContext loads without structural errors:</p>
+
+    <div class="code-block">
+<span style="color: var(--java-anno);">@SpringBootTest</span>
+<span style="color: var(--java-keyword);">class</span> <span style="color: #61afef;">MyApplicationTests</span> {
+
+    <span style="color: var(--java-anno);">@Test</span>
+    <span style="color: var(--java-keyword);">void</span> <span style="color: #61afef;">contextLoads</span>() {
+        <span style="color: #5c6370; font-style: italic;">// Verifies application boot integrity out of the box</span>
+    }
+}</div>
+    <p>While this template checks context booting integrity, you should expand this test class with custom unit tests as your operational features grow.</p>
+
+    <div class="footer-note">
+      Core project layout systems checked! In the upcoming section of our bootcamp, we will configure local development environments and spin up a functioning REST microservice.
+    </div>
+  </div>
+
+</body>
+</html>
