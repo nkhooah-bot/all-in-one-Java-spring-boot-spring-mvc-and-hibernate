@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mastering Spring Boot Properties</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-primary: #34a853;
+      --bg-card: #1c1e29;
+      --border-color: #2e3245;
+      --text-main: #f3f4f6;
+      --text-muted: #8e96aa;
+      --terminal-bg: #090a0f;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background-color: #14151f; color: var(--text-main); font-family: 'Plus Jakarta Sans', sans-serif; padding: 30px; }
+    .guide-container { max-width: 800px; margin: 0 auto; background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 32px; }
+    h1 { font-size: 24px; margin-bottom: 8px; }
+    .section-title { font-size: 16px; font-weight: 700; color: var(--brand-primary); margin: 28px 0 12px 0; text-transform: uppercase; }
+    .code-block { padding: 14px; margin: 12px 0; background-color: var(--terminal-bg); border: 1px solid var(--border-color); border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #f8f8f2; }
+    .prop-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    .prop-table th, .prop-table td { padding: 12px; border: 1px solid var(--border-color); text-align: left; font-size: 14px; }
+    .prop-table th { background: #090a0f; }
+  </style>
+</head>
+<body>
+
+  <div class="guide-container">
+    <h1>Spring Boot Configuration Properties</h1>
+    <p style="color: var(--text-muted);">Spring Boot offers over 1,000 configuration properties located in <code>application.properties</code>, enabling environment-specific adjustments without code changes.</p>
+
+    
+
+    <div class="section-title">1. Web & Server Configuration</div>
+    <p>Adjust how your server exposes endpoints and manages incoming traffic.</p>
+    <table class="prop-table">
+      <tr><th>Property</th><th>Description</th></tr>
+      <tr><td><code>server.port</code></td><td>Changes the listener port (Default: 8080)</td></tr>
+      <tr><td><code>server.servlet.context-path</code></td><td>Sets a global prefix for all URLs</td></tr>
+      <tr><td><code>server.servlet.session.timeout</code></td><td>Sets HTTP session expiry (e.g., 20m)</td></tr>
+    </table>
+
+    <div class="section-title">2. Logging Management</div>
+    <p>Configure visibility and log storage destinations based on package hierarchy.</p>
+    <div class="code-block">
+      # Set specific package logging levels<br>
+      logging.level.org.springframework=DEBUG<br>
+      logging.level.org.hibernate=TRACE<br><br>
+      # Redirect logs to a file instead of console<br>
+      logging.file.name=myapp.log
+    </div>
+
+    <div class="section-title">3. Security & Actuator</div>
+    <p>Override auto-generated defaults for production security and endpoint monitoring.</p>
+    <div class="code-block">
+      # Define custom authentication<br>
+      spring.security.user.name=admin<br>
+      spring.security.user.password=password<br><br>
+      # Change base path for actuator endpoints<br>
+      management.endpoints.web.base-path=/monitor
+    </div>
+
+    <div class="section-title">4. Data Access (JDBC)</div>
+    <p>Standard properties for establishing connectivity with backend RDBMS.</p>
+    <div class="code-block">
+      spring.datasource.url=jdbc:mysql://localhost:3306/db_name<br>
+      spring.datasource.username=John<br>
+      spring.datasource.password=Smith
+    </div>
+
+    <div style="margin-top: 30px; border-top: 1px solid var(--border-color); padding-top: 20px; font-size: 13px; color: var(--text-muted);">
+      <p><strong>Note:</strong> Always refer to the <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html" style="color:var(--brand-primary);">Official Spring Boot Documentation</a> for the complete list of available properties.</p>
+    </div>
+  </div>
+</body>
+</html>
