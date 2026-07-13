@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Installing JDK and Eclipse IDE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-primary: #34a853;
+      --bg-main: #090a0f;
+      --bg-card: #1c1e29;
+      --border-color: #2e3245;
+      --text-main: #f3f4f6;
+      --text-muted: #8e96aa;
+      --accent-glow: rgba(52, 168, 83, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: #14151f; /* Matches workspace frame background */
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.6;
+      padding: 30px;
+    }
+
+    .guide-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 32px;
+    }
+
+    .header-block {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+    }
+
+    .header-block h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .intro-text {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--brand-primary);
+      margin: 28px 0 12px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    p {
+      font-size: 14px;
+      color: var(--text-main);
+      margin-bottom: 16px;
+    }
+
+    .step-list {
+      list-style-type: none;
+      margin-bottom: 20px;
+    }
+
+    .step-item {
+      position: relative;
+      padding-left: 32px;
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+
+    .step-number {
+      position: absolute;
+      left: 0;
+      top: 2px;
+      width: 20px;
+      height: 20px;
+      background-color: var(--accent-glow);
+      border: 1px solid var(--brand-primary);
+      color: var(--brand-primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .info-box {
+      background-color: rgba(9, 10, 15, 0.4);
+      border-left: 3px solid var(--brand-primary);
+      padding: 16px;
+      border-radius: 0 6px 6px 0;
+      margin: 20px 0;
+    }
+
+    .info-box-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .info-box p {
+      margin-bottom: 0;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .footer-note {
+      border-top: 1px solid var(--border-color);
+      margin-top: 32px;
+      padding-top: 16px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="guide-container">
+    <div class="header-block">
+      <h1>Installing JDK and Eclipse IDE</h1>
+      <p class="intro-text">Welcome! In this tutorial, you will learn how to set up your environment and gather all the necessary tools required to begin developing fully functional applications in Java.</p>
+    </div>
+
+    <p>To create a Java program, you essentially build standard text files and compile them into binary computer program files that your operating system can natively execute. We will install two crucial elements to handle this workflow configuration automatically.</p>
+
+    <div class="info-box">
+      <div class="info-box-title">Core Concepts Defined</div>
+      <p><strong>JDK (Java Development Kit):</strong> The underlying platform software that allows you to create and compile Java programs. It natively includes the JRE (Java Runtime Environment).</p>
+      <p style="margin-top: 6px;"><strong>Eclipse IDE (Integrated Development Environment):</strong> A specialized, feature-rich editor that manages your project layouts and translates text code into executable software seamlessly.</p>
+    </div>
+
+    <div class="section-title">Step 1: Download and Setup the Java Development Kit (JDK)</div>
+    <ul class="step-list">
+      <li class="step-item">
+        <span class="step-number">1</span>
+        Open your web browser, navigate to Google, and search for <strong>"Download JDK"</strong>.
+      </li>
+      <li class="step-item">
+        <span class="step-number">2</span>
+        Select the official Oracle Java Downloads portal from the search results.
+      </li>
+      <li class="step-item">
+        <span class="step-number">3</span>
+        Choose your platform target depending on your active operating system architecture (Linux, macOS, or Windows). 
+      </li>
+      <li class="step-item">
+        <span class="step-number">4</span>
+        If you are on Windows, download the standard <strong>x64 Installer</strong> link.
+      </li>
+      <li class="step-item">
+        <span class="step-number">5</span>
+        Run the downloaded installation file, click <strong>Next</strong> twice through the setup prompts, and close the completion window once finalized.
+      </li>
+    </ul>
+
+    <div class="section-title">Step 2: Install the Eclipse IDE Software</div>
+    <ul class="step-list">
+      <li class="step-item">
+        <span class="step-number">1</span>
+        Navigate back to your web browser and search for <strong>"Eclipse Java download"</strong>.
+      </li>
+      <li class="step-item">
+        <span class="step-number">2</span>
+        Click on the entry for **"Eclipse IDE for Java Developers"**.
+      </li>
+      <li class="step-item">
+        <span class="step-number">3</span>
+        Download the latest stable platform package distribution for your operating system environment.
+      </li>
+      <li class="step-item">
+        <span class="step-number">4</span>
+        Launch the downloaded Eclipse Installer package program.
+      </li>
+      <li class="step-item">
+        <span class="step-number">5</span>
+        Select <strong>"Eclipse IDE for Java Developers"</strong> from the installation configuration menu choices and click <strong>Install</strong>.
+      </li>
+      <li class="step-item">
+        <span class="step-number">6</span>
+        Once the initialization finishes completely, click <strong>Launch</strong> to boot up your editor workspace layout dashboard.
+      </li>
+    </ul>
+
+    <div class="info-box">
+      <div class="info-box-title">System Integration Notice</div>
+      <p>Eclipse inherently relies on the presence of the JDK to operate. Once both packages have been successfully deployed onto your system, you do not need to manually configure background environment links—Eclipse automatically detects and interacts with your newly configured Java Runtime environment handles.</p>
+    </div>
+
+    <div class="footer-note">
+      Environment configuration complete. Let's move on to creating your first Java program!
+    </div>
+  </div>
+
+</body>
+</html>
