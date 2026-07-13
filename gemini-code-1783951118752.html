@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spring Initializr &amp; Maven Introduction</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-primary: #34a853;
+      --bg-main: #090a0f;
+      --bg-card: #1c1e29;
+      --border-color: #2e3245;
+      --text-main: #f3f4f6;
+      --text-muted: #8e96aa;
+      --accent-glow: rgba(52, 168, 83, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: #14151f; /* Matches workspace frame background */
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.6;
+      padding: 30px;
+    }
+
+    .guide-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 32px;
+    }
+
+    .header-block {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+    }
+
+    .header-block h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .intro-text {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--brand-primary);
+      margin: 28px 0 12px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    p {
+      font-size: 14px;
+      color: var(--text-main);
+      margin-bottom: 16px;
+    }
+
+    .step-list {
+      list-style-type: none;
+      margin-bottom: 20px;
+    }
+
+    .step-item {
+      position: relative;
+      padding-left: 32px;
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+
+    .step-number {
+      position: absolute;
+      left: 0;
+      top: 2px;
+      width: 20px;
+      height: 20px;
+      background-color: var(--accent-glow);
+      border: 1px solid var(--brand-primary);
+      color: var(--brand-primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .info-box {
+      background-color: rgba(9, 10, 15, 0.4);
+      border-left: 3px solid var(--brand-primary);
+      padding: 16px;
+      border-radius: 0 6px 6px 0;
+      margin: 20px 0;
+    }
+
+    .info-box-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .info-box p {
+      margin-bottom: 0;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      background-color: rgba(9, 10, 15, 0.6);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #e5c07b;
+      font-size: 13px;
+    }
+
+    .code-block {
+      display: block;
+      padding: 14px;
+      margin: 12px 0;
+      overflow-x: auto;
+      line-height: 1.5;
+    }
+
+    .footer-note {
+      border-top: 1px solid var(--border-color);
+      margin-top: 32px;
+      padding-top: 16px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="guide-container">
+    <div class="header-block">
+      <h1>Spring Initializr &amp; Maven Introduction</h1>
+      <p class="intro-text">In this lecture, we will demonstrate how to bootstrap a clean Spring Boot application framework using Spring Initializr and seamlessly import it into your development ecosystem.</p>
+    </div>
+
+    <div class="info-box">
+      <div class="info-box-title">What is Maven?</div>
+      <p>When creating complex Java projects, manually downloading external <code>.jar</code> library dependencies (like Spring Web, Hibernate, or JSON parsing utilities) and configuring classpath properties can be highly error-prone. <strong>Maven</strong> serves as your automated virtual project assistant: you simply provide a list of declarations in a <code>pom.xml</code> file, and Maven fetches, compiles, and dynamically binds those resources at runtime.</p>
+    </div>
+
+    
+
+    <div class="section-title">Step 1: Generate the Project Structure</div>
+    <ul class="step-list">
+      <li class="step-item">
+        <span class="step-number">1</span>
+        Navigate to the browser web portal at <a href="https://start.spring.io" target="_blank" style="color: var(--brand-primary); text-decoration: none; font-weight: 600;">start.spring.io</a>.
+      </li>
+      <li class="step-item">
+        <span class="step-number">2</span>
+        Select <strong>Maven</strong> under the build automation configuration profile options and assign <strong>Java</strong> as the application language.
+      </li>
+      <li class="step-item">
+        <span class="step-number">3</span>
+        Choose the most recent stable release version of **Spring Boot**. <em>(Avoid choosing variants labeled with "SNAPSHOT", as they represent experimental pre-release builds).</em>
+      </li>
+      <li class="step-item">
+        <span class="step-number">4</span>
+        Configure the Project Metadata variables exactly as follows:
+        <div style="margin-top: 6px; color: var(--text-muted); font-size: 13px; padding-left: 10px;">
+          • Group ID: <code>com.example.springboot.demo</code><br>
+          • Artifact ID: <code>my-app</code> <em>(This represents the base project directory folder name)</em>
+        </div>
+      </li>
+      <li class="step-item">
+        <span class="step-number">5</span>
+        Click the **Add Dependencies** button on the right, search for <strong>Web</strong>, and choose **Spring Web**. This pulls in full-stack components, including Spring MVC and an embedded Tomcat server instance.
+      </li>
+      <li class="step-item">
+        <span class="step-number">6</span>
+        Click the **Generate** button at the base of the page layout to compile your custom starter package file download (<code>my-app.zip</code>).
+      </li>
+    </ul>
+
+    <div class="section-title">Step 2: Extract and Localize the Project Files</div>
+    <ul class="step-list">
+      <li class="step-item">
+        <span class="step-number">1</span>
+        Open your operating system's local file manager directory and track down the downloaded zip compression file.
+      </li>
+      <li class="step-item">
+        <span class="step-number">2</span>
+        Unzip/uncompress the file pack contents completely.
+      </li>
+      <li class="step-item">
+        <span class="step-number">3</span>
+        Copy the extracted project root folder and paste it into your desired active local workspace directory folder.
+      </li>
+    </ul>
+
+    <div class="section-title">Step 3: Import into IntelliJ IDEA</div>
+    <ul class="step-list">
+      <li class="step-item">
+        <span class="step-number">1</span>
+        Launch your IDE (IntelliJ IDEA) and choose the **Open** action link prompt from the navigation dashboard window.
+      </li>
+      <li class="step-item">
+        <span class="step-number">2</span>
+        Browse over and highlight your localized <code>my-app</code> root workspace folder, then click **OK**.
+      </li>
+      <li class="step-item">
+        <span class="step-number">3</span>
+        When prompted by the system modal utility notification window, click **Trust Project**.
+      </li>
+      <li class="step-item">
+        <span class="step-number">4</span>
+        Allow the framework internal automation loops time to run silently. Maven will scan your project configuration parameters and download all necessary remote dependency file wrappers.
+      </li>
+    </ul>
+
+    <div class="section-title">Step 4: Analyze and Launch the Main Application Class</div>
+    <p>Inside the IDE, browse down the workspace directory structure tree to locate your main bootstrap class entry file: <code>src/main/java/com/example/springboot/demo/MyappApplication.java</code>.</p>
+
+    <code class="code-block">
+<span style="color: #c678dd;">@SpringBootApplication</span>
+<span style="color: #c678dd;">public class</span> <span style="color: #e5c07b;">MyappApplication</span> {
+    <span style="color: #c678dd;">public static void</span> <span style="color: #61afef;">main</span>(<span style="color: #e5c07b;">String</span>[] args) {
+        <span style="color: #e5c07b;">SpringApplication</span>.<span style="color: #61afef;">run</span>(<span style="color: #e5c07b;">MyappApplication</span>.<span style="color: #c678dd;">class</span>, args);
+    }
+}
+    </code>
+
+    <div class="info-box">
+      <div class="info-box-title">Code Breakdown</div>
+      <p><code>@SpringBootApplication</code> flags this target Java class profile blueprint structure as the official application entry gate template indicator hook.</p>
+      <p style="margin-top: 6px;"><code>SpringApplication.run()</code> invokes the backend runtime orchestration module layers, launching your internal web server container automatically.</p>
+    </div>
+
+    <ul class="step-list">
+      <li class="step-item">
+        <span class="step-number">1</span>
+        To run the engine, click on the **Green Run Arrow Button** placed directly inside the main script text wrapper, or right-click your class source file body structure canvas and select **Run 'MyappApplication'**.
+      </li>
+      <li class="step-item">
+        <span class="step-number">2</span>
+        <em>Troubleshooting Tip:</em> If the IDE interface elements fail to display context actions due to initialization indexing issues, right-click the root <code>src</code> folder workspace item directory inside your project view panel and select **Mark Directory as -> Sources Root** to force re-indexing.
+      </li>
+    </ul>
+
+    <div class="footer-note">
+      Project initial environment setup verified. In upcoming modules, we will dive deep into analyzing every single generated file structure!
+    </div>
+  </div>
+
+</body>
+</html>
