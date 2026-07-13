@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spring Boot DevTools &amp; Auto-Restart Configuration</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-primary: #34a853;
+      --bg-main: #090a0f;
+      --bg-card: #1c1e29;
+      --border-color: #2e3245;
+      --text-main: #f3f4f6;
+      --text-muted: #8e96aa;
+      --accent-glow: rgba(52, 168, 83, 0.1);
+      --file-gold: #e5c07b;
+      --xml-tag: #f92672;
+      --xml-comment: #5c6370;
+      --setting-accent: #61afef;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: #14151f; /* Matches academy workspace frame background */
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.6;
+      padding: 30px;
+    }
+
+    .guide-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 32px;
+    }
+
+    .header-block {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+    }
+
+    .header-block h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .intro-text {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--brand-primary);
+      margin: 28px 0 12px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    p {
+      font-size: 14px;
+      color: var(--text-main);
+      margin-bottom: 16px;
+    }
+
+    .code-block {
+      display: block;
+      padding: 14px;
+      margin: 12px 0;
+      overflow-x: auto;
+      line-height: 1.5;
+      background-color: #090a0f;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: #f8f8f2;
+    }
+
+    .setup-steps {
+      background-color: rgba(9, 10, 15, 0.4);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+
+    .setup-steps h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+
+    .setup-steps ol {
+      padding-left: 20px;
+      font-size: 14px;
+      color: var(--text-main);
+    }
+
+    .setup-steps ol li {
+      margin-bottom: 10px;
+    }
+
+    .setup-steps strong {
+      color: var(--setting-accent);
+    }
+
+    .info-box {
+      background-color: rgba(9, 10, 15, 0.4);
+      border-left: 3px solid var(--brand-primary);
+      padding: 16px;
+      border-radius: 0 6px 6px 0;
+      margin: 20px 0;
+    }
+
+    .info-box-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .info-box p {
+      margin-bottom: 0;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .footer-note {
+      border-top: 1px solid var(--border-color);
+      margin-top: 32px;
+      padding-top: 16px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="guide-container">
+    <div class="header-block">
+      <h1>Spring Boot DevTools &amp; Live Reloading</h1>
+      <p class="intro-text">In this module, we introduce the spring-boot-devtools wrapper module to eliminate manual server restarts during iterative backend code changes.</p>
+    </div>
+
+    <p>In standard development lifecycles, modifying a Java class or updating configuration logic requires you to manually terminate your active execution container and restart the application to compile the updates. This process introduces friction into fast feedback loops.</p>
+    
+    <p>To address this, the Spring development group provides **Spring Boot DevTools**—an isolated ecosystem dependency module that monitors your build classpath and triggers an automated, optimized server restart the moment a resource change compiles.</p>
+
+    <div class="section-title">1. Adding the DevTools Dependency</div>
+    <p>To enable live reloading across your codebase without drafting manual script mechanisms, insert the following dependency node inside the <code>&lt;dependencies&gt;</code> section of your <code>pom.xml</code> file:</p>
+
+    <div class="code-block">
+        <span style="color: var(--xml-comment); font-style: italic;">&lt;!-- Spring Boot Developer Tools Ecosystem Module --&gt;</span>
+        &lt;<span style="color: var(--xml-tag);">dependency</span>&gt;
+            &lt;<span style="color: var(--xml-tag);">groupId</span>&gt;org.springframework.boot&lt;/<span style="color: var(--xml-tag);">groupId</span>&gt;
+            &lt;<span style="color: var(--xml-tag);">artifactId</span>&gt;spring-boot-devtools&lt;/<span style="color: var(--xml-tag);">artifactId</span>&gt;
+            <span style="color: var(--xml-comment); font-style: italic;">&lt;!-- Optional flag bounds execution exclusively to local development runs --&gt;</span>
+            &lt;<span style="color: var(--xml-tag);">optional</span>&gt;true&lt;/<span style="color: var(--xml-tag);">optional</span>&gt;
+        &lt;/<span style="color: var(--xml-tag);">dependency</span>&gt;</div>
+
+    <div class="section-title">2. Mandatory IntelliJ IDEA Configuration Steps</div>
+    <p>While IDEs like Eclipse handle automatic compilation seamlessly, IntelliJ IDEA users must update two quick background compilation settings to unlock automatic restarts:</p>
+
+    
+
+    <div class="setup-steps">
+      <h3>IntelliJ Auto-Restart Setup Pipeline</h3>
+      <ol>
+        <li>Navigate to the primary settings panel: <strong>File → Settings</strong> (or <code>Ctrl+Alt+S</code> / <code>Cmd+,</code> on macOS).</li>
+        <li>In the left sidebar menu, expand <strong>Build, Execution, Deployment</strong> and select the <strong>Compiler</strong> tier.</li>
+        <li>Check the box labeled <strong>Build project automatically</strong> and click apply.</li>
+        <li>Next, click the <strong>Advanced Settings</strong> category located lower down in the left sidebar tree.</li>
+        <li>Under the Compiler grouping section, check the box labeled <strong>Allow auto-make to start even if developed application is currently running</strong>.</li>
+        <li>Click <strong>OK</strong> to finalize the workspace configuration.</li>
+      </ol>
+    </div>
+
+    <div class="section-title">3. Verifying the Hot Reload Behavior</div>
+    <p>Once configured, boot your microservice instance. Make an adjustment to any plain response string inside your active REST Controller endpoint file and save. DevTools will pick up the compilation event from the workspace background stream, tearing down the existing context and booting an optimized live container configuration under 1-2 seconds.</p>
+
+    <div class="info-box">
+      <div class="info-box-title">Under the Hood: Fast Restarts</div>
+      <p>Spring Boot DevTools achieves near-instant restart milestones by maintaining two distinct ClassLoaders: a base ClassLoader tracking static third-party jars (like Spring and Hibernate frameworks) which stays resident in memory, and a dynamic development ClassLoader tracking your immediate project files that drops and reloads instantly.</p>
+    </div>
+
+    <div class="footer-note">
+      Development tools configured! In the upcoming coding lab session, we will open up our workspace editor and observe live hot reloading mechanisms in action.
+    </div>
+  </div>
+
+</body>
+</html>
