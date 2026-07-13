@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maven Core Concepts &amp; Dependency Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-primary: #34a853;
+      --bg-main: #090a0f;
+      --bg-card: #1c1e29;
+      --border-color: #2e3245;
+      --text-main: #f3f4f6;
+      --text-muted: #8e96aa;
+      --accent-glow: rgba(52, 168, 83, 0.1);
+      --alert-blue: #3b82f6;
+      --blue-glow: rgba(59, 130, 246, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: #14151f; /* Matches workspace frame background */
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.6;
+      padding: 30px;
+    }
+
+    .guide-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 32px;
+    }
+
+    .header-block {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+    }
+
+    .header-block h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .intro-text {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--brand-primary);
+      margin: 28px 0 12px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    p {
+      font-size: 14px;
+      color: var(--text-main);
+      margin-bottom: 16px;
+    }
+
+    .comparison-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 20px 0;
+    }
+
+    @media (max-width: 600px) {
+      .comparison-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .workflow-card {
+      background-color: rgba(9, 10, 15, 0.4);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 20px;
+    }
+
+    .workflow-card h3 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .workflow-card.without h3 {
+      color: #ef4444;
+    }
+
+    .workflow-card.with h3 {
+      color: var(--brand-primary);
+    }
+
+    .workflow-list {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .workflow-list li {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+      position: relative;
+      padding-left: 18px;
+    }
+
+    .workflow-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--text-muted);
+    }
+
+    .workflow-card.without .workflow-list li::before {
+      color: #ef4444;
+    }
+
+    .workflow-card.with .workflow-list li::before {
+      color: var(--brand-primary);
+    }
+
+    .info-box {
+      background-color: rgba(9, 10, 15, 0.4);
+      border-left: 3px solid var(--brand-primary);
+      padding: 16px;
+      border-radius: 0 6px 6px 0;
+      margin: 20px 0;
+    }
+
+    .info-box.blue-box {
+      border-left-color: var(--alert-blue);
+      background-color: var(--blue-glow);
+    }
+
+    .info-box-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .blue-box .info-box-title {
+      color: #60a5fa;
+    }
+
+    .info-box p {
+      margin-bottom: 0;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      background-color: rgba(9, 10, 15, 0.6);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #e5c07b;
+      font-size: 13px;
+    }
+
+    .footer-note {
+      border-top: 1px solid var(--border-color);
+      margin-top: 32px;
+      padding-top: 16px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="guide-container">
+    <div class="header-block">
+      <h1>Maven Core Concepts &amp; Dependency Management</h1>
+      <p class="intro-text">In this lecture, we explore Apache Maven, its operational relationship with Spring Boot apps, and how it eliminates painful manual dependency tracking workflows.</p>
+    </div>
+
+    <p>At its core, <strong>Maven</strong> is a comprehensive project management and build automation tool for Java applications. Its primary responsibility centers around handling project lifecycles, compiling source structures, and managing external framework dependencies automatically.</p>
+
+    <div class="section-title">Comparing Project Workflows</div>
+    <p>To fully appreciate what Maven brings to modern development ecosystems, let's contrast how a traditional project handles dependencies versus the automated Maven approach:</p>
+
+    <div class="comparison-container">
+      <div class="workflow-card without">
+        <h3>Without Maven (Manual Process)</h3>
+        <ul class="workflow-list">
+          <li>You must manually navigate to the website of each library (Spring, Hibernate, Apache Commons, Jackson JSON).</li>
+          <li>Locate and download the appropriate versions of individual <code>.jar</code> binaries.</li>
+          <li>Manually drop the downloaded files into your local project workspace directories.</li>
+          <li>Manually modify your IDE's environment Build Path / Classpath settings to point to each asset.</li>
+        </ul>
+      </div>
+
+      <div class="workflow-card with">
+        <h3>With Maven (Automated Process)</h3>
+        <ul class="workflow-list">
+          <li>You create a simple configuration text file listing the specific libraries your project requires.</li>
+          <li>Maven automatically contacts a remote library database known as the <strong>Maven Central Repository</strong>.</li>
+          <li>It fetches the requested software library components instantly in the background.</li>
+          <li>Maven automatically binds the files into your compile and execution paths.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section-title">Advanced Feature: Transitive Dependency Management</div>
+    <p>Beyond simply downloading the exact items you ask for, Maven resolves background relationships. This structural process is called resolving <strong>Transitive Dependencies</strong>.</p>
+
+    <div class="info-box blue-box">
+      <div class="info-box-title">Understanding Transitive Links</div>
+      <p>If you specify that your application needs the core <strong>Spring Framework</strong> library, Maven is smart enough to evaluate Spring's internal manifest code properties. It detects that Spring relies on <code>commons-logging</code>, so it automatically reaches out and fetches that additional jar for you as well. You only manage top-level parameters; Maven orchestrates the cascading library tree.</p>
+    </div>
+
+    <div class="section-title">Automating Build Paths and Execution Classpaths</div>
+    <p>Manually updating environment classpaths when shifting projects between developers is a frequent source of broken builds. Maven removes this risk entirely by generating the classpath dynamically based on its standardized configuration manifest—the <code>pom.xml</code> file.</p>
+    
+    <p>Whenever you build, test, or launch a Spring Boot application runner instance, Maven builds and verifies the classpath mapping boundaries automatically behind the scenes.</p>
+
+    <div class="footer-note">
+      Conceptual overview complete! In the next module, we will dive deep into analyzing the standardized physical folder structural layout that Maven enforces.
+    </div>
+  </div>
+
+</body>
+</html>
