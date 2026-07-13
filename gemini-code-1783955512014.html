@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Application Properties &amp; @Value Injection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-primary: #34a853;
+      --bg-main: #090a0f;
+      --bg-card: #1c1e29;
+      --border-color: #2e3245;
+      --text-main: #f3f4f6;
+      --text-muted: #8e96aa;
+      --java-anno: #d19a66;
+      --java-keyword: #c678dd;
+      --java-string: #98c379;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+    body { background-color: #14151f; color: var(--text-main); font-family: 'Plus Jakarta Sans', sans-serif; line-height: 1.6; padding: 30px; }
+    .guide-container { max-width: 800px; margin: 0 auto; background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 32px; }
+    
+    .header-block { border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 24px; }
+    .header-block h1 { font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .intro-text { color: var(--text-muted); font-size: 14px; }
+    .section-title { font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--brand-primary); margin: 28px 0 12px 0; display: flex; align-items: center; gap: 8px; }
+    
+    .code-block { display: block; padding: 14px; margin: 12px 0; overflow-x: auto; background-color: #090a0f; border: 1px solid var(--border-color); border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #f8f8f2; }
+    .info-box { background-color: rgba(9, 10, 15, 0.4); border-left: 3px solid var(--brand-primary); padding: 16px; border-radius: 0 6px 6px 0; margin: 20px 0; }
+    .footer-note { border-top: 1px solid var(--border-color); margin-top: 32px; padding-top: 16px; text-align: center; font-size: 13px; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+
+  <div class="guide-container">
+    <div class="header-block">
+      <h1>Custom Application Properties</h1>
+      <p class="intro-text">Externalizing configuration allows you to define flexible application settings inside <code>application.properties</code> and inject them seamlessly using the <code>@Value</code> annotation.</p>
+    </div>
+
+    
+
+    <p>Spring Boot simplifies environment management by reading configuration from a standard file located in <code>src/main/resources/application.properties</code>. By defining custom keys here, you avoid hard-coding values into your Java source files.</p>
+
+    <div class="section-title">1. Defining Custom Properties</div>
+    <p>Open your <code>application.properties</code> file and register your custom configuration keys:</p>
+
+    <div class="code-block">
+<span style="color: #5c6370; font-style: italic;"># Custom application settings</span>
+instructor.name=John Smith
+student.class=Java Class J02</div>
+
+    <div class="section-title">2. Injecting Properties with @Value</div>
+    <p>Use the <code>@Value</code> annotation to map these properties to fields within your REST controllers. Spring Boot automatically resolves these placeholders during bean initialization:</p>
+
+    <div class="code-block">
+<span style="color: var(--java-anno);">@RestController</span>
+<span style="color: var(--java-keyword);">public class</span> <span style="color: #61afef;">SimpleRestController</span> {
+
+    <span style="color: #5c6370; font-style: italic;">// Injecting instructor name from application.properties</span>
+    <span style="color: var(--java-anno);">@Value</span>(<span style="color: var(--java-string);">"${instructor.name}"</span>)
+    <span style="color: var(--java-keyword);">private</span> String instructorName;
+
+    <span style="color: #5c6370; font-style: italic;">// Injecting student class name</span>
+    <span style="color: var(--java-anno);">@Value</span>(<span style="color: var(--java-string);">"${student.class}"</span>)
+    <span style="color: var(--java-keyword);">private</span> String studentClass;
+
+    <span style="color: var(--java-anno);">@GetMapping</span>(<span style="color: var(--java-string);">"/teaminfo"</span>)
+    <span style="color: var(--java-keyword);">public</span> String <span style="color: #61afef;">getTeamInfo</span>() {
+        <span style="color: var(--java-keyword);">return</span> <span style="color: var(--java-string);">"Instructor: "</span> + instructorName + <span style="color: var(--java-string);">", Class: "</span> + studentClass;
+    }
+}</div>
+
+    <div class="info-box">
+      <div style="font-weight:700; font-size:12px; text-transform:uppercase; margin-bottom:4px;">Why use this pattern?</div>
+      <p style="font-size:13px; color:var(--text-muted);">This approach decouples your business logic from environment-specific configuration. It makes your code cleaner and significantly easier to port between development, staging, and production environments.</p>
+    </div>
+
+    <div class="footer-note">
+      Configuration mapping complete! Next, we will open up the IDE to run this implementation and verify our injected values.
+    </div>
+  </div>
+
+</body>
+</html>
