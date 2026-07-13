@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hands-On Lab: Customizing the Info Endpoint</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700&family=JetBrains+Mono:wght=400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-primary: #34a853;
+      --bg-main: #090a0f;
+      --bg-card: #1c1e29;
+      --border-color: #2e3245;
+      --text-main: #f3f4f6;
+      --text-muted: #8e96aa;
+      --accent-glow: rgba(52, 168, 83, 0.1);
+      --file-gold: #e5c07b;
+      --xml-tag: #f92672;
+      --xml-comment: #5c6370;
+      --json-key: #ef596f;
+      --json-val: #89ca78;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: #14151f; /* Matches academy workspace frame background */
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.6;
+      padding: 30px;
+    }
+
+    .guide-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 32px;
+    }
+
+    .header-block {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+    }
+
+    .header-block h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .intro-text {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--brand-primary);
+      margin: 28px 0 12px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    p {
+      font-size: 14px;
+      color: var(--text-main);
+      margin-bottom: 16px;
+    }
+
+    .code-block {
+      display: block;
+      padding: 14px;
+      margin: 12px 0;
+      overflow-x: auto;
+      line-height: 1.5;
+      background-color: #090a0f;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: #f8f8f2;
+    }
+
+    .lab-steps {
+      list-style-type: none;
+      margin: 20px 0;
+    }
+
+    .lab-step-item {
+      position: relative;
+      padding-left: 32px;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    .lab-step-number {
+      position: absolute;
+      left: 0;
+      top: 2px;
+      background-color: var(--brand-primary);
+      color: #090a0f;
+      font-weight: 700;
+      font-size: 11px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lab-step-item strong {
+      color: #fff;
+    }
+
+    .browser-mockup {
+      background-color: #090a0f;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      margin: 16px 0;
+    }
+
+    .browser-bar {
+      background-color: #1c1e29;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border-color);
+      border-radius: 6px 6px 0 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .browser-dots {
+      display: flex;
+      gap: 4px;
+    }
+
+    .browser-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--border-color);
+    }
+
+    .browser-address {
+      background-color: #090a0f;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      padding: 2px 12px;
+      border-radius: 4px;
+      flex-grow: 1;
+      border: 1px solid var(--border-color);
+    }
+
+    .browser-viewport {
+      padding: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: #fff;
+    }
+
+    .info-box {
+      background-color: rgba(9, 10, 15, 0.4);
+      border-left: 3px solid var(--brand-primary);
+      padding: 16px;
+      border-radius: 0 6px 6px 0;
+      margin: 20px 0;
+    }
+
+    .info-box-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .info-box p {
+      margin-bottom: 0;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .footer-note {
+      border-top: 1px solid var(--border-color);
+      margin-top: 32px;
+      padding-top: 16px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="guide-container">
+    <div class="header-block">
+      <h1>Coding Lab: Customizing the Actuator Info Endpoint</h1>
+      <p class="intro-text">Follow this hands-on setup guide to append custom metadata keys inside application.properties and verify the structured JSON telemetry details in real time.</p>
+    </div>
+
+    <p>While the <code>/actuator/info</code> path is exposed, calling it right now returns an empty JSON object (<code>{}</code>). In this coding session, we will configure custom corporate descriptor tags using the <code>info.*</code> namespace to supply metadata for the telemetry interface.</p>
+
+    <div class="section-title">Step-by-Step Lab Execution Pipeline</div>
+    <ul class="lab-steps">
+      <li class="lab-step-item">
+        <span class="lab-step-number">1</span>
+        <strong>Update your properties block:</strong> Navigate to your <code>src/main/resources/application.properties</code> file and append your custom application info variables directly beneath your existing endpoint exposures:
+      </li>
+    </ul>
+
+    <div class="code-block">
+<span style="color: var(--xml-comment); font-style: italic;"># Expose select web endpoints (health and info)</span>
+management.endpoints.web.exposure.include=health,info
+management.info.env.enabled=true
+
+<span style="color: var(--xml-comment); font-style: italic;"># Custom Metadata properties for /actuator/info endpoint</span>
+info.app.name=Healthy Activities
+info.app.description=This app keeps track of your daily healthy activities.
+info.app.version=3.0.0</div>
+
+    <p><em>Tip: Because you configured Spring Boot DevTools in the earlier modules, saving this file triggers an instant background context refresh—no manual restarts required!</em></p>
+
+    <ul class="lab-steps" style="margin-top: 0;">
+      <li class="lab-step-item">
+        <span class="lab-step-number">2</span>
+        <strong>Save and Monitor the Console:</strong> Once you save the configurations, check your IDE's active run terminal window. You'll observe the classpath changes being loaded seamlessly in real-time.
+      </li>
+    </ul>
+
+    <div class="section-title">Verifying the Structured JSON Payload</div>
+    <p>Return to your web browser and execute a clean refresh on your endpoint. The empty array is replaced with nested, well-formed configuration objects:</p>
+
+    <div class="browser-mockup">
+      <div class="browser-bar">
+        <div class="browser-dots"><div class="browser-dot"></div><div class="browser-dot"></div><div class="browser-dot"></div></div>
+        <div class="browser-address">http://localhost:8080/actuator/info</div>
+      </div>
+      <div class="browser-viewport">
+        {<br>
+        &nbsp;&nbsp;"<span style="color: var(--json-key);">app</span>": {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;"<span style="color: var(--json-key);">name</span>": "<span style="color: var(--json-val);">Healthy Activities</span>",<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;"<span style="color: var(--json-key);">description</span>": "<span style="color: var(--json-val);">This app keeps track of your daily healthy activities.</span>",<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;"<span style="color: var(--json-key);">version</span>": "<span style="color: var(--json-val);">3.0.0</span>"<br>
+        &nbsp;&nbsp;}<br>
+        }
+      </div>
+    </div>
+
+    <div class="info-box">
+      <div class="info-box-title">Under the Hood: The info.* Namespace Mapping</div>
+      <p>When <code>management.info.env.enabled</code> is flagged as <code>true</code>, the Actuator engine scans your environmental scope, isolates all values prefix-matched with <code>info.</code>, structures the keys recursively, and formats them into the JSON tree response context automatically.</p>
+    </div>
+
+    <div class="footer-note">
+      Actuator metrics successfully customized! In the upcoming lecture, we will explore security guidelines to shield these operational endpoints from anonymous public users.
+    </div>
+  </div>
+
+</body>
+</html>
