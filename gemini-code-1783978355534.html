@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab: Server & Context Path Configuration</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-primary: #34a853;
+      --bg-card: #1c1e29;
+      --border-color: #2e3245;
+      --text-main: #f3f4f6;
+      --text-muted: #8e96aa;
+      --terminal-bg: #090a0f;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background-color: #14151f; color: var(--text-main); font-family: 'Plus Jakarta Sans', sans-serif; padding: 30px; }
+    .guide-container { max-width: 800px; margin: 0 auto; background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 32px; }
+    h1 { font-size: 24px; margin-bottom: 8px; }
+    .section-title { font-size: 16px; font-weight: 700; color: var(--brand-primary); margin: 28px 0 12px 0; text-transform: uppercase; }
+    .code-block { padding: 14px; margin: 12px 0; background-color: var(--terminal-bg); border: 1px solid var(--border-color); border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #f8f8f2; }
+    .lab-steps { list-style-type: none; margin: 20px 0; }
+    .lab-step-item { position: relative; padding-left: 32px; margin-bottom: 20px; font-size: 14px; }
+    .lab-step-number { position: absolute; left: 0; top: 2px; background-color: var(--brand-primary); color: #090a0f; font-weight: 700; font-size: 11px; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  </style>
+</head>
+<body>
+
+  <div class="guide-container">
+    <h1>Lab: Server & Context Path Configuration</h1>
+    <p style="color: var(--text-muted);">Configure your application’s runtime binding by overriding default server ports and setting a global context path.</p>
+
+    <div class="section-title">1. Properties Implementation</div>
+    <p>Update your <code>application.properties</code> file with the new port and context path requirements:</p>
+    
+    <div class="code-block">
+      # Set server port<br>
+      server.port=8585<br><br>
+      # Set global application context path<br>
+      server.servlet.context-path=/myapp
+    </div>
+
+    
+
+    <div class="section-title">2. Verification Pipeline</div>
+    <ul class="lab-steps">
+      <li class="lab-step-item">
+        <span class="lab-step-number">1</span>
+        <strong>Hot Reload:</strong> Saving the file initiates an automatic restart via <code>spring-boot-devtools</code>. Check the console to confirm Tomcat is now running on port <code>8585</code> with context <code>/myapp</code>.
+      </li>
+      <li class="lab-step-item">
+        <span class="lab-step-number">2</span>
+        <strong>Test Access:</strong> Attempt to reach the old URL (<code>localhost:8080/classinfo</code>). It should return a connection error or 404.
+      </li>
+      <li class="lab-step-item">
+        <span class="lab-step-number">3</span>
+        <strong>Verify New Path:</strong> Successfully access your controller via the new configuration: <code>http://localhost:8585/myapp/classinfo</code>.
+      </li>
+    </ul>
+
+    <div style="margin-top: 30px; border-top: 1px solid var(--border-color); padding-top: 20px; font-size: 13px; color: var(--text-muted);">
+      <p><strong>Pro-Tip:</strong> Using a context path is essential for multi-application deployments, as it prevents URL conflicts and allows for clean organization of microservice APIs under a single domain or server port.</p>
+    </div>
+  </div>
+</body>
+</html>
