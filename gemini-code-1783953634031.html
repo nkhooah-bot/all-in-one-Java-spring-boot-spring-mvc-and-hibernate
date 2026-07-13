@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hands-On Lab: Verifying Live Reload with DevTools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-primary: #34a853;
+      --bg-main: #090a0f;
+      --bg-card: #1c1e29;
+      --border-color: #2e3245;
+      --text-main: #f3f4f6;
+      --text-muted: #8e96aa;
+      --accent-glow: rgba(52, 168, 83, 0.1);
+      --file-gold: #e5c07b;
+      --java-anno: #d19a66;
+      --java-keyword: #c678dd;
+      --java-string: #98c379;
+      --terminal-cyan: #56b6c2;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: #14151f; /* Matches academy workspace frame background */
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.6;
+      padding: 30px;
+    }
+
+    .guide-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 32px;
+    }
+
+    .header-block {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+    }
+
+    .header-block h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .intro-text {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--brand-primary);
+      margin: 28px 0 12px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    p {
+      font-size: 14px;
+      color: var(--text-main);
+      margin-bottom: 16px;
+    }
+
+    .code-block {
+      display: block;
+      padding: 14px;
+      margin: 12px 0;
+      overflow-x: auto;
+      line-height: 1.5;
+      background-color: #090a0f;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: #f8f8f2;
+    }
+
+    .lab-steps {
+      list-style-type: none;
+      margin: 20px 0;
+    }
+
+    .lab-step-item {
+      position: relative;
+      padding-left: 32px;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    .lab-step-number {
+      position: absolute;
+      left: 0;
+      top: 2px;
+      background-color: var(--brand-primary);
+      color: #090a0f;
+      font-weight: 700;
+      font-size: 11px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lab-step-item strong {
+      color: #fff;
+    }
+
+    .browser-mockup {
+      background-color: #090a0f;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      margin: 16px 0;
+      font-family: sans-serif;
+    }
+
+    .browser-bar {
+      background-color: #1c1e29;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border-color);
+      border-radius: 6px 6px 0 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .browser-dots {
+      display: flex;
+      gap: 4px;
+    }
+
+    .browser-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--border-color);
+    }
+
+    .browser-address {
+      background-color: #090a0f;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      padding: 2px 12px;
+      border-radius: 4px;
+      flex-grow: 1;
+      border: 1px solid var(--border-color);
+    }
+
+    .browser-viewport {
+      padding: 16px;
+      font-family: monospace;
+      font-size: 14px;
+      color: #fff;
+    }
+
+    .info-box {
+      background-color: rgba(9, 10, 15, 0.4);
+      border-left: 3px solid var(--brand-primary);
+      padding: 16px;
+      border-radius: 0 6px 6px 0;
+      margin: 20px 0;
+    }
+
+    .info-box-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .info-box p {
+      margin-bottom: 0;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .footer-note {
+      border-top: 1px solid var(--border-color);
+      margin-top: 32px;
+      padding-top: 16px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="guide-container">
+    <div class="header-block">
+      <h1>Coding Lab: Verifying Live Reload Behavior</h1>
+      <p class="intro-text">In this practical lab session, we open the IDE to implement automatic reloading, inject alternative routing points, and watch the console refresh automatically.</p>
+    </div>
+
+    <p>Now that our development ecosystem is configured, let's verify how Spring Boot DevTools cuts out manual compilation loops. We will run our primary application class and introduce dual mock REST endpoints while keeping our server runtime completely active.</p>
+
+    <div class="section-title">Step-by-Step Lab Execution Pipeline</div>
+    <ul class="lab-steps">
+      <li class="lab-step-item">
+        <span class="lab-step-number">1</span>
+        <strong>Initialize the Runtime:</strong> Open your main entry class file <code>MyAppApplication.java</code> and launch the application. Ensure the integrated shell console boots completely on port <code>8080</code>.
+      </li>
+      <li class="lab-step-item">
+        <span class="lab-step-number">2</span>
+        <strong>Append Endpoints:</strong> Open your custom <code>SimpleRestController.java</code> source class to expand your system behaviors with the live mock mappings below.
+      </li>
+    </ul>
+
+    <div class="section-title">Updated Rest Controller Blueprint</div>
+    <p>Add these two continuous mapping methods directly inside your controller body without stopping or terminating your active IDE console execution:</p>
+
+    <div class="code-block">
+<span style="color: var(--java-anno);">@RestController</span>
+<span style="color: var(--java-keyword);">public class</span> <span style="color: #61afef;">SimpleRestController</span> {
+
+    <span style="color: #5c6370; font-style: italic;">// Existing base endpoints match here...</span>
+
+    <span style="color: #5c6370; font-style: italic;">// Expose new endpoint for learning goals</span>
+    <span style="color: var(--java-anno);">@GetMapping</span>(<span style="color: var(--java-string);">"/learning"</span>)
+    <span style="color: var(--java-keyword);">public</span> String <span style="color: #61afef;">getLearningGoals</span>() {
+        <span style="color: var(--java-keyword);">return</span> <span style="color: var(--java-string);">"Learn 4 modules each day."</span>;
+    }
+
+    <span style="color: #5c6370; font-style: italic;">// Expose new endpoint for gaming levels</span>
+    <span style="color: var(--java-anno);">@GetMapping</span>(<span style="color: var(--java-string);">"/gaming"</span>)
+    <span style="color: var(--java-keyword);">public</span> String <span style="color: #61afef;">getDailyLevels</span>() {
+        <span style="color: var(--java-keyword);">return</span> <span style="color: var(--java-string);">"Complete 10 levels per day."</span>;
+    }
+}</div>
+
+    <div class="section-title">Observing the Console Activity Stream</div>
+    <p>When you press <code>Ctrl+S</code> (or <code>Cmd+S</code> on macOS) to save your code adjustments, look closely at your lower terminal console. You will notice the log screen instantly scroll as DevTools drops the classloader and re-allocates endpoints without taking down your underlying process.</p>
+
+    <div class="section-title">Verifying Output inside the Browser</div>
+    <p>Open your local web browser tool to test both dynamic targets. The system loads your new business logic immediately without requiring any manual server restarts:</p>
+
+    <div class="browser-mockup">
+      <div class="browser-bar">
+        <div class="browser-dots"><div class="browser-dot"></div><div class="browser-dot"></div><div class="browser-dot"></div></div>
+        <div class="browser-address">http://localhost:8080/learning</div>
+      </div>
+      <div class="browser-viewport">Learn 4 modules each day.</div>
+    </div>
+
+    <div class="browser-mockup">
+      <div class="browser-bar">
+        <div class="browser-dots"><div class="browser-dot"></div><div class="browser-dot"></div><div class="browser-dot"></div></div>
+        <div class="browser-address">http://localhost:8080/gaming</div>
+      </div>
+      <div class="browser-viewport">Complete 10 levels per day.</div>
+    </div>
+
+    <div class="info-box">
+      <div class="info-box-title">Instructor Efficiency Recommendation</div>
+      <p>Keep the DevTools framework active throughout the remaining lifecycle of this course. It saves hours of compiling overhead across microservice builds, allowing you to focus purely on rapid feature updates.</p>
+    </div>
+
+    <div class="footer-note">
+      Hot reloading verified and working! In the next lecture, we will dive deep into operations monitoring using <strong>Spring Boot Actuator</strong>.
+    </div>
+  </div>
+
+</body>
+</html>
