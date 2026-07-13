@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ALL IN ONE! Java + Spring Boot, Spring MVC and Hibernate - Academy Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      /* Course Theme Color Profile Palette (Spring Green Accent) */
+      --brand-primary: #34a853;
+      --brand-primary-glow: rgba(52, 168, 83, 0.15);
+      --brand-primary-hover: #2ca04c;
+      
+      --bg-main: #090a0f;
+      --bg-sidebar: #12131a;
+      --bg-card: #1c1e29;
+      --bg-card-hover: #252836;
+      --border-color: #2e3245;
+      
+      --text-main: #f3f4f6;
+      --text-muted: #8e96aa;
+      
+      /* Difficulty Tracking Badges */
+      --low-color: #10b981;
+      --low-color-glow: rgba(16, 185, 129, 0.1);
+      
+      --sidebar-width: 340px; 
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+    }
+
+    .app-container {
+      display: flex;
+      width: 100%;
+      height: 100vh;
+      position: relative;
+    }
+
+    aside {
+      width: var(--sidebar-width);
+      background-color: var(--bg-sidebar);
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      z-index: 10;
+      flex-shrink: 0; 
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .sidebar-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .brand-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-icon {
+      width: 20px;
+      height: 20px;
+      color: var(--brand-primary);
+      flex-shrink: 0;
+    }
+
+    .brand-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #fff 0%, var(--text-muted) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .search-wrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    .search-input {
+      width: 100%;
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      color: var(--text-main);
+      padding: 8px 12px 8px 32px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 12px;
+      outline: none;
+    }
+
+    .search-input:focus {
+      border-color: var(--brand-primary);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 14px;
+      height: 14px;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .toc-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 8px;
+    }
+
+    /* Accordion Section Wrapper Elements styling */
+    .section-container {
+      margin-bottom: 8px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      background-color: rgba(28, 30, 41, 0.2);
+      overflow: hidden;
+    }
+
+    .section-header {
+      width: 100%;
+      background-color: var(--bg-card);
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      border: none;
+      text-align: left;
+      outline: none;
+      transition: background-color 0.2s ease;
+    }
+
+    .section-header:hover {
+      background-color: var(--bg-card-hover);
+    }
+
+    .section-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-main);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      padding-right: 8px;
+      line-height: 1.4;
+    }
+
+    .section-arrow {
+      font-size: 10px;
+      color: var(--brand-primary);
+      transition: transform 0.2s ease;
+    }
+
+    .section-content {
+      display: block; 
+      padding: 6px;
+      border-top: 1px solid var(--border-color);
+      background-color: rgba(9, 10, 15, 0.4);
+    }
+
+    /* Accordion Closed States styling toggles */
+    .section-container.collapsed .section-content {
+      display: none;
+    }
+
+    .section-container.collapsed .section-arrow {
+      transform: rotate(-90deg);
+    }
+
+    .toc-item {
+      width: 100%;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 5px;
+      padding: 8px 10px;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      transition: all 0.15s ease;
+      margin-bottom: 2px;
+    }
+
+    .toc-item:hover {
+      background-color: var(--bg-card);
+      border-color: var(--border-color);
+    }
+
+    .toc-item.active {
+      background-color: var(--brand-primary-glow);
+      border-color: var(--brand-primary);
+    }
+
+    .toc-title {
+      font-size: 12px; 
+      font-weight: 500;
+      color: var(--text-main);
+      line-height: 1.4;
+    }
+
+    .toc-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .severity-badge {
+      font-size: 9px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 500;
+      padding: 1px 5px;
+      border-radius: 3px;
+      text-transform: uppercase;
+      background-color: var(--low-color-glow); 
+      color: var(--low-color);
+    }
+
+    .no-results-msg {
+      padding: 24px 12px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 12px;
+      display: none;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      background-color: var(--bg-main);
+      position: relative;
+      min-width: 0; 
+    }
+
+    .content-header {
+      height: 60px; 
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      background-color: rgba(9, 10, 15, 0.7);
+      backdrop-filter: blur(12px);
+      z-index: 5;
+    }
+
+    .header-left-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .mobile-menu-toggle {
+      display: none;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .incident-nav-meta {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .incident-id-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .incident-subject {
+      font-size: 14px; 
+      font-weight: 600;
+      color: var(--text-main);
+      margin-top: 1px;
+    }
+
+    .action-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 6px 12px;
+      border-radius: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .btn:hover {
+      background-color: var(--bg-card-hover);
+    }
+
+    .btn-primary {
+      background-color: var(--brand-primary);
+      border-color: var(--brand-primary);
+    }
+
+    .workspace-frame-wrapper {
+      flex: 1;
+      position: relative;
+      background-color: #14151f;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .loader-mask {
+      position: absolute;
+      inset: 0;
+      background-color: var(--bg-main);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      z-index: 8;
+    }
+
+    .loader-mask.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .spinner {
+      width: 24px;
+      height: 24px;
+      border: 2.5px solid var(--border-color);
+      border-top-color: var(--brand-primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 1024px) {
+      aside {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        transform: translateX(-100%);
+      }
+      aside.mobile-open {
+        transform: translateX(0);
+      }
+      .mobile-menu-toggle {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <aside id="dashboardSidebar">
+      <div class="sidebar-header">
+        <div class="brand-title-wrap">
+          <svg class="brand-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M2 3h20v4H2zm2 14h7v4H4zm11 0h7v4h-7zm-11-7h7v4H4zm11 0h7v4h-7z"/>
+          </svg>
+          <span class="brand-title">Java &amp; Spring Masterclass</span>
+        </div>
+        
+        <div class="search-wrapper">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="menuSearchInput" class="search-input" placeholder="Search course topics..." oninput="filterMenuItems()">
+        </div>
+      </div>
+
+      <div class="toc-scroll" id="tocContainer">
+        <!-- Generated programmatically with Dropdown sections -->
+        <div class="no-results-msg" id="noResultsMessage">No matching items found</div>
+      </div>
+    </aside>
+
+    <main>
+      <header class="content-header">
+        <div class="header-left-group">
+          <button class="mobile-menu-toggle" onclick="toggleMobileSidebar()">
+            <span id="toggleButtonText">View Menu</span>
+          </button>
+          <div class="incident-nav-meta">
+            <span class="incident-id-tag" id="currentSectionTag">SECTION 1</span>
+            <h1 class="incident-subject" id="currentSubject">Loading...</h1>
+          </div>
+        </div>
+
+        <div class="action-controls">
+          <button class="btn" onclick="navigateLecture(-1)">Back</button>
+          <button class="btn" onclick="navigateLecture(1)">Next</button>
+        </div>
+      </header>
+
+      <div class="workspace-frame-wrapper">
+        <div class="loader-mask" id="iframeLoader">
+          <div class="spinner"></div>
+        </div>
+        <iframe id="displaySandbox" src="about:blank" onload="onFrameLoad()"></iframe>
+      </div>
+    </main>
+
+  </div>
+
+  <script>
+    const courseData = [
+      // Section 1
+      { section: "Section - Java programming -Part 1", subject: "Installing JDK and Eclipse IDE" },
+      { section: "Section - Java programming -Part 1", subject: "Your First Hello World Program" },
+      { section: "Section - Java programming -Part 1", subject: "Variables" },
+      { section: "Section - Java programming -Part 1", subject: "Strings" },
+      { section: "Section - Java programming -Part 1", subject: "While Loops" },
+      { section: "Section - Java programming -Part 1", subject: "For Loops" },
+      { section: "Section - Java programming -Part 1", subject: "If Statements" },
+      { section: "Section - Java programming -Part 1", subject: "Getting User Input" },
+      { section: "Section - Java programming -Part 1", subject: "Comments, Variable Scope, Do While Loops" },
+      { section: "Section - Java programming -Part 1", subject: "Switch Statements" },
+      { section: "Section - Java programming -Part 1", subject: "Arrays" },
+      { section: "Section - Java programming -Part 1", subject: "Multidimensional Arrays, Nested For Loops" },
+      { section: "Section - Java programming -Part 1", subject: "Classes, Methods, and Objects" },
+      { section: "Section - Java programming -Part 1", subject: "Return Types and Method Parameters" },
+      { section: "Section - Java programming -Part 1", subject: "Packages" },
+      { section: "Section - Java programming -Part 1", subject: "Constructors and this vs. this()" },
+      { section: "Section - Java programming -Part 1", subject: "Static and Final" },
+      { section: "Section - Java programming -Part 1", subject: "Inheritance and Access Modifiers" },
+      { section: "Section - Java programming -Part 1", subject: "Polymorphism" },
+      { section: "Section - Java programming -Part 1", subject: "Encapsulation" },
+      { section: "Section - Java programming -Part 1", subject: "Casting" },
+      { section: "Section - Java programming -Part 1", subject: "Interfaces" },
+      { section: "Section - Java programming -Part 1", subject: "Anonymous Classes" },
+      { section: "Section - Java programming -Part 1", subject: "Reading Files with Scanner Class" },
+      { section: "Section - Java programming -Part 1", subject: "StringBuilder" },
+      { section: "Section - Java programming -Part 1", subject: "toString Method" },
+      { section: "Section - Java programming -Part 1", subject: "The Equals Method" },
+      { section: "Section - Java programming -Part 1", subject: "Ternary Operator" },
+
+      // Section 2
+      { section: "Section 2 - Game project", subject: "Setting Up The Game" },
+      { section: "Section 2 - Game project", subject: "Game Logic 1" },
+      { section: "Section 2 - Game project", subject: "Game Logic 2" },
+      { section: "Section 2 - Game project", subject: "Game Logic 3" },
+
+      // Section 3
+      { section: "Section 3 - Java programming -Part 2", subject: "Handling Exceptions" },
+      { section: "Section 3 - Java programming -Part 2", subject: "Multiple Exceptions" },
+      { section: "Section 3 - Java programming -Part 2", subject: "Runtime Exceptions" },
+      { section: "Section 3 - Java programming -Part 2", subject: "Abstract Classes" },
+      { section: "Section 3 - Java programming -Part 2", subject: "Inner Classes" },
+      { section: "Section 3 - Java programming -Part 2", subject: "Passing by Value" },
+      { section: "Section 3 - Java programming -Part 2", subject: "Lambda Expressions" },
+      { section: "Section 3 - Java programming -Part 2", subject: "Enums" },
+      { section: "Section 3 - Java programming -Part 2", subject: "Serialization" },
+      { section: "Section 3 - Java programming -Part 2", subject: "Serializing multiple objects and Transient Keyword" },
+      { section: "Section 3 - Java programming -Part 2", subject: "ArrayList and Linked List" },
+      { section: "Section 3 - Java programming -Part 2", subject: "HashMap" },
+      { section: "Section 3 - Java programming -Part 2", subject: "LinkedHashMap and TreeMap" },
+      { section: "Section 3 - Java programming -Part 2", subject: "HashSet, LinkedHashSet and TreeSet" },
+      { section: "Section 3 - Java programming -Part 2", subject: "Sorting List" },
+
+      // Section 4
+      { section: "Section 4 - Multithreading", subject: "Starting Threads" },
+      { section: "Section 4 - Multithreading", subject: "Volatile Keyword" },
+      { section: "Section 4 - Multithreading", subject: "Synchronized Keyword" },
+      { section: "Section 4 - Multithreading", subject: "Multiple Locks" },
+      { section: "Section 4 - Multithreading", subject: "ThreadPools" },
+      { section: "Section 4 - Multithreading", subject: "CountDownLatch" },
+      { section: "Section 4 - Multithreading", subject: "Wait & Notify" },
+      { section: "Section 4 - Multithreading", subject: "Re-entrant Locks" },
+      { section: "Section 4 - Multithreading", subject: "Semaphores" },
+      { section: "Section 4 - Multithreading", subject: "Switch Expressions" },
+      { section: "Section 4 - Multithreading", subject: "var Keyword" },
+      { section: "Section 4 - Multithreading", subject: "Text Blocks" },
+      { section: "Section 4 - Multithreading", subject: "Sealed Classes" },
+      { section: "Section 4 - Multithreading", subject: "Record Classes" },
+      { section: "Section 4 - Multithreading", subject: "Virtual Threads" },
+      { section: "Section 4 - Multithreading", subject: "Unnamed Classes & Unnamed Variables" },
+      { section: "Section 4 - Multithreading", subject: "Sequenced Collection" },
+      { section: "Section 4 - Multithreading", subject: "Sequenced Set" },
+      { section: "Section 4 - Multithreading", subject: "Sequenced Map" },
+
+      // Section 5
+      { section: "Section 5 - Spring Boot Introduction", subject: "Spring Initializr - Part 1" },
+      { section: "Section 5 - Spring Boot Introduction", subject: "Spring Initializr - Part 2" },
+      { section: "Section 5 - Spring Boot Introduction", subject: "Spring Boot - Create a REST Controller" },
+      { section: "Section 5 - Spring Boot Introduction", subject: "What is Maven" },
+      { section: "Section 5 - Spring Boot Introduction", subject: "Maven Project Structure" },
+      { section: "Section 5 - Spring Boot Introduction", subject: "Maven Concepts" },
+      { section: "Section 5 - Spring Boot Introduction", subject: "Spring Boot Project Structure - Part 1" },
+      { section: "Section 5 - Spring Boot Introduction", subject: "Spring Boot Project Structure - Part 2" },
+      { section: "Section 5 - Spring Boot Introduction", subject: "Spring Boot Starters" },
+      { section: "Section 5 - Spring Boot Introduction", subject: "Spring Boot Starter Parent" },
+      { section: "Section 5 - Spring Boot Introduction", subject: "Spring Boot Dev Tools" },
+      { section: "Section 5 - Spring Boot Introduction", subject: "Spring Boot Dev Tools - Coding" },
+      { section: "Section 5 - Spring Boot Introduction", subject: "Spring Boot Actuator" },
+      { section: "Section 5 - Spring Boot Introduction", subject: "Spring Boot - Accessing EndPoints" },
+      { section: "Section 5 - Spring Boot Introduction", subject: "Spring Boot - Securing Endpoints" },
+      { section: "Section 5 - Spring Boot Introduction", subject: "Spring Boot - Securing Endpoints - Coding" },
+      { section: "Section 5 - Spring Boot Introduction", subject: "Injecting Custom Properties" },
+      { section: "Section 5 - Spring Boot Introduction", subject: "Injecting Custom Properties - Coding" },
+      { section: "Section 5 - Spring Boot Introduction", subject: "Configuring Spring Boot Server" },
+      { section: "Section 5 - Spring Boot Introduction", subject: "Configuring Spring Boot Server - Coding" },
+
+      // Section 7
+      { section: "Section 7: Spring Framework - Inversion of Control and dependency Injection", subject: "Inversion of Control" },
+      { section: "Section 7: Spring Framework - Inversion of Control and dependency Injection", subject: "Spring Dependency Injection - Part 1" },
+      { section: "Section 7: Spring Framework - Inversion of Control and dependency Injection", subject: "Spring Dependency Injection - Part 2" },
+      { section: "Section 7: Spring Framework - Inversion of Control and dependency Injection", subject: "Constructor Injection" },
+      { section: "Section 7: Spring Framework - Inversion of Control and dependency Injection", subject: "Constructor Injection - Coding - Part 1" },
+      { section: "Section 7: Spring Framework - Inversion of Control and dependency Injection", subject: "Constructor Injection - Coding - Part 2" },
+      { section: "Section 7: Spring Framework - Inversion of Control and dependency Injection", subject: "Scanning Components" },
+      { section: "Section 7: Spring Framework - Inversion of Control and dependency Injection", subject: "Scanning Components - Coding" },
+      { section: "Section 7: Spring Framework - Inversion of Control and dependency Injection", subject: "Injecting Setters" },
+      { section: "Section 7: Spring Framework - Inversion of Control and dependency Injection", subject: "Injecting Setters - Coding" },
+      { section: "Section 7: Spring Framework - Inversion of Control and dependency Injection", subject: "Injecting Fields" },
+      { section: "Section 7: Spring Framework - Inversion of Control and dependency Injection", subject: "Qualifiers" },
+      { section: "Section 7: Spring Framework - Inversion of Control and dependency Injection", subject: "Qualifiers - Coding" },
+      { section: "Section 7: Spring Framework - Inversion of Control and dependency Injection", subject: "Primary Annotation" },
+      { section: "Section 7: Spring Framework - Inversion of Control and dependency Injection", subject: "Primary Annotation - Coding" },
+      { section: "Section 7: Spring Framework - Inversion of Control and dependency Injection", subject: "Lazy Initialization" },
+      { section: "Section 7: Spring Framework - Inversion of Control and dependency Injection", subject: "Lazy Initialization - Coding" },
+      { section: "Section 7: Spring Framework - Inversion of Control and dependency Injection", subject: "Bean Scopes" },
+      { section: "Section 7: Spring Framework - Inversion of Control and dependency Injection", subject: "Bean Scopes - Coding - Part 1" },
+      { section: "Section 7: Spring Framework - Inversion of Control and dependency Injection", subject: "Bean Scopes - Coding - Part 2" },
+      { section: "Section 7: Spring Framework - Inversion of Control and dependency Injection", subject: "Bean Lifecycle Methods" },
+      { section: "Section 7: Spring Framework - Inversion of Control and dependency Injection", subject: "Bean Lifecycle Methods - Coding" },
+      { section: "Section 7: Spring Framework - Inversion of Control and dependency Injection", subject: "Configuring Beans" },
+      { section: "Section 7: Spring Framework - Inversion of Control and dependency Injection", subject: "Configuring Beans - Coding" },
+
+      // Section 8
+      { section: "Section 8: Spring Framework - JPA, JDBC and hibernate", subject: "JPA and Hibernate" },
+      { section: "Section 8: Spring Framework - JPA, JDBC and hibernate", subject: "JPA, JDBC and Hibernate" },
+      { section: "Section 8: Spring Framework - JPA, JDBC and hibernate", subject: "Development Environment Setup" },
+      { section: "Section 8: Spring Framework - JPA, JDBC and hibernate", subject: "Database Table - Setup" },
+      { section: "Section 8: Spring Framework - JPA, JDBC and hibernate", subject: "Database Table - Coding" },
+      { section: "Section 8: Spring Framework - JPA, JDBC and hibernate", subject: "Spring Boot Setup" },
+      { section: "Section 8: Spring Framework - JPA, JDBC and hibernate", subject: "Spring Boot Setup - Coding - Part 1" },
+      { section: "Section 8: Spring Framework - JPA, JDBC and hibernate", subject: "Spring Boot Setup - Coding - Part 2" },
+      { section: "Section 8: Spring Framework - JPA, JDBC and hibernate", subject: "JPA Annotations" },
+      { section: "Section 8: Spring Framework - JPA, JDBC and hibernate", subject: "JPA Annotations - Coding" },
+      { section: "Section 8: Spring Framework - JPA, JDBC and hibernate", subject: "Using JPA" },
+      { section: "Section 8: Spring Framework - JPA, JDBC and hibernate", subject: "Using JPA - Coding" },
+      { section: "Section 8: Spring Framework - JPA, JDBC and hibernate", subject: "Primary Keys" },
+      { section: "Section 8: Spring Framework - JPA, JDBC and hibernate", subject: "Changing Index of MySQL" },
+      { section: "Section 8: Spring Framework - JPA, JDBC and hibernate", subject: "Retrieving Objects with JPA" },
+      { section: "Section 8: Spring Framework - JPA, JDBC and hibernate", subject: "Retrieving Objects with JPA - Coding" },
+      { section: "Section 8: Spring Framework - JPA, JDBC and hibernate", subject: "Querying Objects with JPA" },
+      { section: "Section 8: Spring Framework - JPA, JDBC and hibernate", subject: "Querying Objects with JPA - Coding Part 1" },
+      { section: "Section 8: Spring Framework - JPA, JDBC and hibernate", subject: "Querying Objects with JPA - Coding Part 2" },
+      { section: "Section 8: Spring Framework - JPA, JDBC and hibernate", subject: "Updating Objects with JPA" },
+      { section: "Section 8: Spring Framework - JPA, JDBC and hibernate", subject: "Updating Objects with JPA - Coding" },
+      { section: "Section 8: Spring Framework - JPA, JDBC and hibernate", subject: "Deleting Objects with JPA" },
+      { section: "Section 8: Spring Framework - JPA, JDBC and hibernate", subject: "Deleting Objects with JPA - Coding" },
+      { section: "Section 8: Spring Framework - JPA, JDBC and hibernate", subject: "Creating Database Tables" },
+      { section: "Section 8: Spring Framework - JPA, JDBC and hibernate", subject: "Creating Database Tables - Coding" },
+
+      // Section 9
+      { section: "Section 9: Spring Framework - REST APIs", subject: "REST Services" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "JSON" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Spring Boot REST HTTP" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Postman" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Spring Boot REST Controller" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Spring Boot REST Controller - Coding - PART 1" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Spring Boot REST Controller - Coding - PART 2" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Data Binding" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Spring Boot REST" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Spring Boot REST - Coding" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Path Variables" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Path Variables - Coding" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Spring Boot Exception Handling" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Spring Boot Exception Handling - Coding - Part 1" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Spring Boot Exception Handling - Coding - Part 2" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Spring Boot Global Exception Handler" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Spring Boot Global Exception Handler - Coding" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "REST APIs" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Spring Boot Project" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Spring Boot - Teacher DAO" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Spring Boot - Teacher DAO - Coding - Part 1" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Spring Boot - Teacher DAO - Coding - Part 2" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Spring Boot - Service" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Spring Boot - Service - Coding" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Spring Boot DAO" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Spring Boot DAO - Coding - Part 1" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Spring Boot DAO - Coding - Part 2" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Spring Boot - Retrieving a Single Teacher - Coding" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Spring Boot - Adding a Teacher - Coding" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Spring Boot - Updating a Teacher - Coding" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Spring Boot - Deleting a Teacher - Coding" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Spring Data JPA" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Spring Data JPA - Coding" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Spring Data REST" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Spring Data REST - Coding - Part 1" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Spring Data REST - Coding - Part 2" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Spring Data REST Pagination and Sorting" },
+      { section: "Section 9: Spring Framework - REST APIs", subject: "Spring Data REST Pagination and Sorting - Coding" },
+
+      // Section 10
+      { section: "Section 10: Spring Framework - REST API Security", subject: "REST API Security" },
+      { section: "Section 10: Spring Framework - REST API Security", subject: "REST API Security - Coding" },
+      { section: "Section 10: Spring Framework - REST API Security", subject: "REST API Security - Configuration" },
+      { section: "Section 10: Spring Framework - REST API Security", subject: "REST API Security - Configuration - Coding" },
+      { section: "Section 10: Spring Framework - REST API Security", subject: "REST API Security - Restrict Content" },
+      { section: "Section 10: Spring Framework - REST API Security", subject: "REST API Security - Restrict Content - Coding - Part 1" },
+      { section: "Section 10: Spring Framework - REST API Security", subject: "REST API Security - Restrict Content - Coding - Part 2" },
+      { section: "Section 10: Spring Framework - REST API Security", subject: "REST API Security - Restrict Content - Coding - Part 3" },
+      { section: "Section 10: Spring Framework - REST API Security", subject: "JDBC Authentication" },
+      { section: "Section 10: Spring Framework - REST API Security", subject: "JDBC Authentication - Coding - Part 1" },
+      { section: "Section 10: Spring Framework - REST API Security", subject: "JDBC Authentication - Coding - Part 2" },
+      { section: "Section 10: Spring Framework - REST API Security", subject: "BCrypt Encryption" },
+      { section: "Section 10: Spring Framework - REST API Security", subject: "BCrypt Encryption - Coding" },
+      { section: "Section 10: Spring Framework - REST API Security", subject: "REST API Security - Custom Tables" },
+      { section: "Section 10: Spring Framework - REST API Security", subject: "REST API Security - Custom Tables - Coding" },
+
+      // Section 11
+      { section: "Section 11: Spring MVC", subject: "Thymeleaf" },
+      { section: "Section 11: Spring MVC", subject: "Thymeleaf - Coding - Part 1" },
+      { section: "Section 11: Spring MVC", subject: "Thymeleaf - Coding - Part 2" },
+      { section: "Section 11: Spring MVC", subject: "Thymeleaf and CSS" },
+      { section: "Section 11: Spring MVC", subject: "Thymeleaf and CSS - Coding" },
+      { section: "Section 11: Spring MVC", subject: "Spring MVC" },
+      { section: "Section 11: Spring MVC", subject: "Spring MVC - Form" },
+      { section: "Section 11: Spring MVC", subject: "Spring MVC - Form - Coding - Part 1" },
+      { section: "Section 11: Spring MVC", subject: "Spring MVC - Form - Coding - Part 2" },
+      { section: "Section 11: Spring MVC", subject: "Spring MVC Model" },
+      { section: "Section 11: Spring MVC", subject: "Spring MVC Model - Coding" },
+      { section: "Section 11: Spring MVC", subject: "Request Params" },
+      { section: "Section 11: Spring MVC", subject: "GetMapping and PostMapping" },
+      { section: "Section 11: Spring MVC", subject: "GetMapping and PostMapping - Coding" },
+      { section: "Section 11: Spring MVC", subject: "Data Binding - Text Fields" },
+      { section: "Section 11: Spring MVC", subject: "Data Binding - Text Fields - Coding" },
+      { section: "Section 11: Spring MVC", subject: "Data Binding - Drop-Down Lists" },
+      { section: "Section 11: Spring MVC", subject: "Data Binding - Drop-Down Lists - Coding - Part 2" },
+      { section: "Section 11: Spring MVC", subject: "Data Binding - Radio Buttons" },
+      { section: "Section 11: Spring MVC", subject: "Data Binding - Radio Buttons - Coding - Part 2" },
+      { section: "Section 11: Spring MVC", subject: "Data Binding - Check Boxes" },
+      { section: "Section 11: Spring MVC", subject: "Data Binding - Check Boxes - Coding - Part 1" },
+      { section: "Section 11: Spring MVC", subject: "Data Binding - Check Boxes - Coding - Part 2" },
+      { section: "Section 11: Spring MVC", subject: "Spring MVC Validation - Setup" },
+      { section: "Section 11: Spring MVC", subject: "Spring MVC Validations" },
+      { section: "Section 11: Spring MVC", subject: "Spring MVC Validations - Coding - Part 1" },
+      { section: "Section 11: Spring MVC", subject: "Spring MVC Validations - Coding - Part 2" },
+      { section: "Section 11: Spring MVC", subject: "Spring MVC Validations - Coding - Part 3" },
+      { section: "Section 11: Spring MVC", subject: "Spring MVC Validations" },
+      { section: "Section 11: Spring MVC", subject: "Spring MVC Validations - Coding" },
+      { section: "Section 11: Spring MVC", subject: "Spring MVC Validations" },
+      { section: "Section 11: Spring MVC", subject: "Spring MVC Validations - Coding" },
+      { section: "Section 11: Spring MVC", subject: "Spring MVC Custom Validations" },
+      { section: "Section 11: Spring MVC", subject: "Spring MVC Custom Validations - Coding - Part 1" },
+      { section: "Section 11: Spring MVC", subject: "Spring MVC Custom Validations - Coding - Part 2" },
+
+      // Section 12
+      { section: "Section 12: Spring MVC CRUD", subject: "CRUD Project" },
+      { section: "Section 12: Spring MVC CRUD", subject: "CRUD Project - Setup" },
+      { section: "Section 12: Spring MVC CRUD", subject: "CRUD Project - Get Teachers - Coding - Part 1" },
+      { section: "Section 12: Spring MVC CRUD", subject: "CRUD Project - Get Teachers - Coding - Part 2" },
+      { section: "Section 12: Spring MVC CRUD", subject: "CRUD Project - Get Teachers - Coding - Part 3" },
+      { section: "Section 12: Spring MVC CRUD", subject: "CRUD Project - Add Teachers" },
+      { section: "Section 12: Spring MVC CRUD", subject: "CRUD Project - Add Teachers - Coding - Part 1" },
+      { section: "Section 12: Spring MVC CRUD", subject: "CRUD Project - Add Teachers - Coding - Part 2" },
+      { section: "Section 12: Spring MVC CRUD", subject: "CRUD Project - Update Teachers" },
+      { section: "Section 12: Spring MVC CRUD", subject: "CRUD Project - Update Teachers - Coding" },
+      { section: "Section 12: Spring MVC CRUD", subject: "CRUD Project - Delete Teachers" },
+      { section: "Section 12: Spring MVC CRUD", subject: "CRUD Project - Delete Teachers - Coding" },
+
+      // Section 13
+      { section: "Section 13: Spring MVC Security", subject: "Spring MVC Security" },
+      { section: "Section 13: Spring MVC Security", subject: "Project Setup - Part 1" },
+      { section: "Section 13: Spring MVC Security", subject: "Project Setup - Part 2" },
+      { section: "Section 13: Spring MVC Security", subject: "Spring MVC Security Configuration" },
+      { section: "Section 13: Spring MVC Security", subject: "Spring MVC Security Configuration - Coding" },
+      { section: "Section 13: Spring MVC Security", subject: "Login Form" },
+      { section: "Section 13: Spring MVC Security", subject: "Login Form - Coding - Part 1" },
+      { section: "Section 13: Spring MVC Security", subject: "Login Form - Coding - Part 2" },
+      { section: "Section 13: Spring MVC Security", subject: "Login Form - Coding - Part 3" },
+      { section: "Section 13: Spring MVC Security", subject: "Logout Form" },
+      { section: "Section 13: Spring MVC Security", subject: "User ID and Roles - Coding" },
+      { section: "Section 13: Spring MVC Security", subject: "Restrict Content" },
+      { section: "Section 13: Spring MVC Security", subject: "Restrict Content - Coding - Part 1" },
+      { section: "Section 13: Spring MVC Security", subject: "Restrict Content - Coding - Part 2" },
+      { section: "Section 13: Spring MVC Security", subject: "Custom Access Denied Page" },
+      { section: "Section 13: Spring MVC Security", subject: "Restrict Content Based on Roles" },
+      { section: "Section 13: Spring MVC Security", subject: "JDBC Authentication" },
+      { section: "Section 13: Spring MVC Security", subject: "JDBC Authentication - Coding - Part 1" },
+      { section: "Section 13: Spring MVC Security", subject: "JDBC Authentication - Coding - Part 2" },
+      { section: "Section 13: Spring MVC Security", subject: "BCrypt Encryption" },
+      { section: "Section 13: Spring MVC Security", subject: "BCrypt Encryption - Coding" },
+      { section: "Section 13: Spring MVC Security", subject: "JDBC Authentication - Costum Tables - Coding" }
+    ];
+
+    let currentLectureIndex = 0;
+
+    // Structural Accordion Generator Matrix
+    function initSidebar() {
+      const container = document.getElementById('tocContainer');
+      const fallbackMsg = document.getElementById('noResultsMessage');
+      
+      // Clear previous rendered groups except fallback message
+      const sections = container.querySelectorAll('.section-container');
+      sections.forEach(s => s.remove());
+
+      let currentSectionName = "";
+      let activeSectionWrapper = null;
+      let activeContentContainer = null;
+
+      courseData.forEach((lecture, index) => {
+        // Map new chapter structures
+        if (lecture.section !== currentSectionName) {
+          currentSectionName = lecture.section;
+
+          activeSectionWrapper = document.createElement('div');
+          activeSectionWrapper.className = 'section-container';
+
+          const header = document.createElement('button');
+          header.className = 'section-header';
+          
+          // Lexical binding to wrap click behaviors natively
+          const currentTarget = activeSectionWrapper;
+          header.onclick = () => toggleSection(currentTarget);
+
+          const title = document.createElement('span');
+          title.className = 'section-title';
+          title.textContent = currentSectionName;
+
+          const arrow = document.createElement('span');
+          arrow.className = 'section-arrow';
+          arrow.textContent = '▼';
+
+          header.appendChild(title);
+          header.appendChild(arrow);
+          activeSectionWrapper.appendChild(header);
+
+          activeContentContainer = document.createElement('div');
+          activeContentContainer.className = 'section-content';
+          activeSectionWrapper.appendChild(activeContentContainer);
+
+          container.insertBefore(activeSectionWrapper, fallbackMsg);
+        }
+
+        // Render target items inside nested wrapper context
+        const btn = document.createElement('button');
+        btn.className = `toc-item lecture-item-node`;
+        btn.id = `lecture-node-${index}`;
+        btn.onclick = () => openLecture(index);
+
+        const text = document.createElement('span');
+        text.className = 'toc-title';
+        text.textContent = lecture.subject;
+
+        const metaRow = document.createElement('div');
+        metaRow.className = 'toc-meta';
+        const badge = document.createElement('span');
+        badge.className = 'severity-badge';
+        badge.textContent = 'Lecture';
+
+        metaRow.appendChild(badge);
+        btn.appendChild(text);
+        btn.appendChild(metaRow);
+        
+        activeContentContainer.appendChild(btn);
+      });
+    }
+
+    function toggleSection(element) {
+      element.classList.toggle('collapsed');
+    }
+
+    function openLecture(index) {
+      if (index < 0 || index >= courseData.length) return;
+      currentLectureIndex = index;
+      const target = courseData[index];
+
+      document.getElementById('currentSectionTag').textContent = target.section.toUpperCase();
+      document.getElementById('currentSubject').textContent = target.subject;
+
+      // Reset active tags
+      document.querySelectorAll('.toc-item').forEach(btn => btn.classList.remove('active'));
+
+      const activeBtn = document.getElementById(`lecture-node-${index}`);
+      if (activeBtn) {
+        activeBtn.classList.add('active');
+        
+        // Auto-expand closed parent containers when accessed via navigation buttons
+        const parentSection = activeBtn.closest('.section-container');
+        if (parentSection) {
+          parentSection.classList.remove('collapsed');
+        }
+        activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
+      document.getElementById('iframeLoader').classList.remove('hidden');
+      document.getElementById('displaySandbox').src = `about:blank`;
+
+      const sidebar = document.getElementById('dashboardSidebar');
+      if (sidebar.classList.contains('mobile-open')) {
+        toggleMobileSidebar();
+      }
+    }
+
+    function navigateLecture(direction) {
+      let targetIndex = currentLectureIndex + direction;
+      if (targetIndex >= 0 && targetIndex < courseData.length) {
+        openLecture(targetIndex);
+      }
+    }
+
+    function filterMenuItems() {
+      const filter = document.getElementById('menuSearchInput').value.toLowerCase();
+      const sections = document.querySelectorAll('.section-container');
+      let absoluteVisibleCount = 0;
+
+      sections.forEach(section => {
+        const items = section.querySelectorAll('.toc-item');
+        let sectionHasMatchingContent = 0;
+
+        items.forEach(item => {
+          const text = item.querySelector('.toc-title').textContent.toLowerCase();
+          if (text.includes(filter)) {
+            item.style.display = 'flex';
+            sectionHasMatchingContent++;
+            absoluteVisibleCount++;
+          } else {
+            item.style.display = 'none';
+          }
+        });
+
+        if (sectionHasMatchingContent > 0 || filter === "") {
+          section.style.display = 'block';
+          if (filter !== "") {
+            section.classList.remove('collapsed'); // Expand auto-matched contents instantly
+          }
+        } else {
+          section.style.display = 'none';
+        }
+      });
+
+      document.getElementById('noResultsMessage').style.display = (absoluteVisibleCount === 0) ? 'block' : 'none';
+    }
+
+    function onFrameLoad() {
+      document.getElementById('iframeLoader').classList.add('hidden');
+    }
+
+    function toggleMobileSidebar() {
+      const sidebar = document.getElementById('dashboardSidebar');
+      const text = document.getElementById('toggleButtonText');
+      sidebar.classList.toggle('mobile-open');
+      text.textContent = sidebar.classList.contains('mobile-open') ? "Close Menu" : "View Menu";
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initSidebar();
+      openLecture(0);
+    });
+  </script>
+</body>
+</html>
