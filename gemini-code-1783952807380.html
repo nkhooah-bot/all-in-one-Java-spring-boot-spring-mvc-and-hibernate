@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exploring the Spring Boot Project Structure</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700&family=JetBrains+Mono:wght=400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-primary: #34a853;
+      --bg-main: #090a0f;
+      --bg-card: #1c1e29;
+      --border-color: #2e3245;
+      --text-main: #f3f4f6;
+      --text-muted: #8e96aa;
+      --accent-glow: rgba(52, 168, 83, 0.1);
+      --folder-blue: #60a5fa;
+      --file-gold: #e5c07b;
+      --cmd-purple: #c678dd;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: #14151f; /* Matches academy workspace frame background */
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.6;
+      padding: 30px;
+    }
+
+    .guide-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 32px;
+    }
+
+    .header-block {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+    }
+
+    .header-block h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .intro-text {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--brand-primary);
+      margin: 28px 0 12px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    p {
+      font-size: 14px;
+      color: var(--text-main);
+      margin-bottom: 16px;
+    }
+
+    /* Hierarchy Tree Styles */
+    .project-tree-container {
+      background-color: #090a0f;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 24px;
+      margin: 20px 0;
+    }
+
+    .tree-root {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .tree-root ul {
+      list-style: none;
+      padding-left: 28px;
+      position: relative;
+    }
+
+    .tree-root ul::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 8px;
+      width: 1px;
+      height: calc(100% - 12px);
+      border-left: 1px dashed var(--border-color);
+    }
+
+    .tree-node {
+      position: relative;
+      padding-left: 16px;
+      margin: 6px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .tree-node::before {
+      content: "";
+      position: absolute;
+      top: 10px;
+      left: -20px;
+      width: 16px;
+      height: 1px;
+      border-top: 1px dashed var(--border-color);
+    }
+
+    .folder-name {
+      color: var(--folder-blue);
+      font-weight: 500;
+    }
+
+    .file-name {
+      color: var(--file-gold);
+    }
+
+    .tree-comment {
+      color: #5c6370;
+      font-style: italic;
+      margin-left: 12px;
+      font-size: 12px;
+    }
+
+    /* Terminal/Code Blocks */
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      background-color: rgba(9, 10, 15, 0.6);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--file-gold);
+      font-size: 13px;
+    }
+
+    .terminal-block {
+      background-color: #090a0f;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 14px;
+      margin: 12px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: #f8f8f2;
+      line-height: 1.5;
+    }
+
+    .info-box {
+      background-color: rgba(9, 10, 15, 0.4);
+      border-left: 3px solid var(--brand-primary);
+      padding: 16px;
+      border-radius: 0 6px 6px 0;
+      margin: 20px 0;
+    }
+
+    .info-box-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .info-box p {
+      margin-bottom: 0;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .footer-note {
+      border-top: 1px solid var(--border-color);
+      margin-top: 32px;
+      padding-top: 16px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="guide-container">
+    <div class="header-block">
+      <h1>Spring Boot Project Structure</h1>
+      <p class="intro-text">In this module, we dissect the absolute file framework generated by the Spring Initializr tool, focusing on the roles of Maven Wrappers, application properties, and Spring Boot Starter dependencies.</p>
+    </div>
+
+    <p>Spring Boot adopts the standardized Maven directory hierarchy conventions right out of the box. This provides consistency across your architectural components, making it straightforward to manage source configurations and executable scripts.</p>
+
+    <div class="section-title">The Complete Directory Layout</div>
+    <p>Below is the detailed visual layout of a fresh Spring Boot project blueprint generated by the initialization system:</p>
+
+    <div class="project-tree-container">
+      <ul class="tree-root">
+        <li class="tree-node">
+          <span class="folder-name">my-app/</span>
+          <ul>
+            <li class="tree-node">
+              <span class="folder-name">src/</span>
+              <ul>
+                <li class="tree-node">
+                  <span class="folder-name">main/</span>
+                  <ul>
+                    <li class="tree-node"><span class="folder-name">java/</span> <span class="tree-comment">← Core Java app source files</span></li>
+                    <li class="tree-node">
+                      <span class="folder-name">resources/</span>
+                      <ul>
+                        <li class="tree-node"><span class="file-name">application.properties</span> <span class="tree-comment">← Target environment configurations</span></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+                <li class="tree-node">
+                  <span class="folder-name">test/</span>
+                  <ul>
+                    <li class="tree-node"><span class="folder-name">java/</span> <span class="tree-comment">← Unit testing code files (JUnit, Mockito)</span></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li class="tree-node"><span class="file-name">mvnw</span> <span class="tree-comment">← Maven execution wrapper shell script (Linux / macOS)</span></li>
+            <li class="tree-node"><span class="file-name">mvnw.cmd</span> <span class="tree-comment">← Maven execution wrapper batch script (Windows)</span></li>
+            <li class="tree-node"><span class="file-name">pom.xml</span> <span class="tree-comment">← Master Maven manifest artifact</span></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <div class="section-title">Demystifying the Maven Wrapper (mvnw)</div>
+    <p>The files <code>mvnw</code> and <code>mvnw.cmd</code> represent the **Maven Wrapper**. This wrapper lets you build and run your project securely without needing Maven manually installed or configured on your system's global system path variable.</p>
+    
+    <p>The wrapper automatically scans your workspace. If it doesn't find the correct Maven runtime, it downloads the necessary version dynamically from remote mirrors before executing your instructions. If you already have the correct version of Maven globally installed on your machine, you can safely ignore or delete these wrapper files.</p>
+
+    <div class="section-title">The Power of Spring Boot "Starters"</div>
+    <p>Instead of forcing you to list dozens of individual library declarations one by one inside your <code>pom.xml</code> file, Spring Boot introduces **Starters**. These are curated collections of aggregated, production-tested dependencies.</p>
+
+    
+
+    <div class="info-box">
+      <div class="info-box-title">Starter Spotlight: spring-boot-starter-web</div>
+      <p>By declaring just this single starter artifact, Spring Boot automatically imports and configures several transitive libraries behind the scenes, including: <strong>Spring Web MVC</strong>, <strong>Jackson JSON Processing</strong>, <strong>Hibernate Validator</strong>, and an embedded <strong>Apache Tomcat Server</strong>.</p>
+      <p style="margin-top: 6px;">This ensures version compatibility across your external tools and saves you hours of tracking down manual conflicts.</p>
+    </div>
+
+    <div class="section-title">Command Line Build Operations</div>
+    <p>The <code>spring-boot-maven-plugin</code> handles compiling, packaging, and running your final application package directly from your integrated system terminal console:</p>
+
+    <p><strong>Option A: Using the Maven Wrapper (No local Maven installation required)</strong></p>
+    <div class="terminal-block">
+      <span style="color: var(--text-muted); user-select: none;"># Windows Command Prompt</span><br>
+      mvnw.cmd package<br>
+      mvnw.cmd spring-boot:run<br><br>
+      <span style="color: var(--text-muted); user-select: none;"># Linux / macOS Terminal</span><br>
+      ./mvnw package<br>
+      ./mvnw spring-boot:run
+    </div>
+
+    <p><strong>Option B: Using Native Maven (If Maven is installed locally on your system path)</strong></p>
+    <div class="terminal-block">
+      mvn package<br>
+      mvn spring-boot:run
+    </div>
+
+    <div class="footer-note">
+      Project structures mastered! Up next, we will explore managing application runtimes within the <code>application.properties</code> file.
+    </div>
+  </div>
+
+</body>
+</html>
