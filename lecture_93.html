@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spring Boot Component Scanning Guide</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-primary: #34a853;
+      --bg-card: #1c1e29;
+      --border-color: #2e3245;
+      --text-main: #f3f4f6;
+      --text-muted: #8e96aa;
+    }
+    body { background-color: #14151f; color: var(--text-main); font-family: 'Plus Jakarta Sans', sans-serif; line-height: 1.6; padding: 30px; }
+    .guide-container { max-width: 800px; margin: 0 auto; background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 32px; }
+    .header-block { border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 24px; }
+    h1 { font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .section-title { font-size: 16px; font-weight: 700; color: var(--brand-primary); margin: 28px 0 12px 0; display: flex; align-items: center; gap: 8px; }
+    p { font-size: 14px; margin-bottom: 16px; }
+    pre { background-color: #090a0f; border: 1px solid var(--border-color); border-radius: 6px; padding: 16px; overflow-x: auto; margin: 12px 0; }
+    code { font-family: 'JetBrains Mono', monospace; color: #e5c07b; font-size: 13px; }
+    .footer-note { border-top: 1px solid var(--border-color); margin-top: 32px; padding-top: 16px; text-align: center; font-size: 13px; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+  <div class="guide-container">
+    <div class="header-block">
+      <h1>Spring Boot Component Scanning</h1>
+      <p>Understanding how Spring discovers and registers your beans.</p>
+    </div>
+
+    
+
+    <div class="section-title">The Default Scanning Scope</div>
+    <p>Spring Boot automatically scans components (classes with <code>@Component</code>, <code>@RestController</code>, etc.) starting from the package containing your main <code>@SpringBootApplication</code> class. It recursively scans all subpackages below that root.</p>
+
+    <div class="section-title">Explicit Package Scanning</div>
+    <p>If your components are located in packages outside the root package hierarchy, Spring will not find them by default. You must explicitly configure the <code>scanBasePackages</code> attribute:</p>
+
+    <pre><code>@SpringBootApplication(scanBasePackages = {
+    "com.example.springcoretutorial",
+    "com.example.springbootsecurity",
+    "org.domainname.example"
+})
+public class SpringCoreTutorialApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(SpringCoreTutorialApplication.class, args);
+    }
+}</code></pre>
+
+    <div class="section-title">Key Annotations</div>
+    <p>The <code>@SpringBootApplication</code> annotation is a convenience wrapper for:</p>
+    <ul>
+        <li><code>@EnableAutoConfiguration</code>: Enables auto-configuration support.</li>
+        <li><code>@ComponentScan</code>: Enables component scanning.</li>
+        <li><code>@Configuration</code>: Allows for manual bean registration via <code>@Bean</code> methods.</li>
+    </ul>
+
+    <div class="footer-note">
+      Keep your packages structured under the root directory whenever possible to leverage default scanning.
+    </div>
+  </div>
+</body>
+</html>
