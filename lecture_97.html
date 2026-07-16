@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Field Injection in Spring Boot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-primary: #34a853;
+      --bg-card: #1c1e29;
+      --border-color: #2e3245;
+      --text-main: #f3f4f6;
+      --text-muted: #8e96aa;
+    }
+    body { background-color: #14151f; color: var(--text-main); font-family: 'Plus Jakarta Sans', sans-serif; line-height: 1.6; padding: 30px; }
+    .guide-container { max-width: 800px; margin: 0 auto; background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 32px; }
+    .header-block { border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 24px; }
+    h1 { font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .section-title { font-size: 16px; font-weight: 700; color: #ff6b6b; margin: 28px 0 12px 0; display: flex; align-items: center; gap: 8px; }
+    .section-title.standard { color: var(--brand-primary); }
+    p { font-size: 14px; margin-bottom: 16px; }
+    pre { background-color: #090a0f; border: 1px solid var(--border-color); border-radius: 6px; padding: 16px; overflow-x: auto; margin: 12px 0; }
+    code { font-family: 'JetBrains Mono', monospace; color: #e5c07b; font-size: 13px; }
+    .footer-note { border-top: 1px solid var(--border-color); margin-top: 32px; padding-top: 16px; text-align: center; font-size: 13px; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+  <div class="guide-container">
+    <div class="header-block">
+      <h1>Field Injection in Spring Boot</h1>
+      <p>Understanding legacy dependency injection and why it is no longer recommended.</p>
+    </div>
+
+    
+
+    <div class="section-title">What is Field Injection?</div>
+    <p>Field injection uses the <code>@Autowired</code> annotation directly on a class field. Spring uses Java Reflection to set the field value, even if it is private, completely bypassing constructors or setter methods.</p>
+
+    <div class="section-title">Code Implementation</div>
+    <pre><code>@RestController
+public class CourseController {
+
+    // Dependency is injected directly via reflection
+    @Autowired
+    private Instructor myInstructor;
+
+    @GetMapping("/programmingexercise")
+    public String getProgrammingExercise() {
+        return myInstructor.getProgrammingExercises();
+    }
+}</code></pre>
+
+    <div class="section-title" style="color: #f1c40f;">Why it is Not Recommended</div>
+    <ul>
+        <li><strong>Hard to Test:</strong> You cannot easily mock dependencies because the fields are private and inaccessible without complex reflection.</li>
+        <li><strong>Hidden Dependencies:</strong> Requirements for the class are not visible in the constructor.</li>
+        <li><strong>Tight Coupling:</strong> The class becomes heavily dependent on the Spring framework for initialization.</li>
+    </ul>
+
+    <div class="section-title standard">Recommended Alternatives</div>
+    <p>To follow modern best practices, prioritize these injection types:</p>
+    <ul>
+        <li><strong>Constructor Injection (Recommended):</strong> Best for required dependencies. Enables immutability.</li>
+        <li><strong>Setter Injection:</strong> Best for optional dependencies. Provides flexibility.</li>
+    </ul>
+
+    <div class="footer-note">
+      Legacy Warning: You may find Field Injection in older codebases, but modern Spring development favors explicit constructor-based dependency injection.
+    </div>
+  </div>
+</body>
+</html>
