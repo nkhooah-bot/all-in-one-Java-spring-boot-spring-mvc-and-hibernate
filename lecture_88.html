@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dependency Injection in Spring</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-primary: #34a853;
+      --bg-card: #1c1e29;
+      --border-color: #2e3245;
+      --text-main: #f3f4f6;
+      --text-muted: #8e96aa;
+    }
+    body { background-color: #14151f; color: var(--text-main); font-family: 'Plus Jakarta Sans', sans-serif; line-height: 1.6; padding: 30px; }
+    .guide-container { max-width: 800px; margin: 0 auto; background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 32px; }
+    .header-block { border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 24px; }
+    h1 { font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .section-title { font-size: 16px; font-weight: 700; color: var(--brand-primary); margin: 28px 0 12px 0; display: flex; align-items: center; gap: 8px; }
+    p { font-size: 14px; margin-bottom: 16px; }
+    .info-box { background-color: rgba(9, 10, 15, 0.4); border-left: 3px solid var(--brand-primary); padding: 16px; border-radius: 0 6px 6px 0; margin: 20px 0; }
+    ul { list-style-type: none; }
+    li { position: relative; padding-left: 24px; margin-bottom: 10px; font-size: 14px; }
+    li::before { content: "✓"; position: absolute; left: 0; color: var(--brand-primary); font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="guide-container">
+    <div class="header-block">
+      <h1>Spring Dependency Injection (DI)</h1>
+      <p>Implementing the Dependency Inversion principle to build modular applications.</p>
+    </div>
+
+    <div class="section-title">What is Dependency Injection?</div>
+    <p>Dependency Injection (DI) is the practice of outsourcing object construction. Instead of your classes manually instantiating their dependencies (like "parts of a laptop"), you ask the <strong>Spring Container</strong> to provide them. The container assembles all necessary components and delivers the ready-to-use object to your application.</p>
+
+    
+
+    <div class="section-title">Two Primary Injection Types</div>
+    <ul>
+      <li><strong>Constructor Injection:</strong> Used for <em>required</em> dependencies. This is the approach officially recommended by the Spring team.</li>
+      <li><strong>Setter Injection:</strong> Used for <em>optional</em> dependencies, allowing your application to fall back on default logic if a dependency is not provided.</li>
+    </ul>
+
+    <div class="section-title">Spring Auto Wiring</div>
+    <p>Spring simplifies DI through <strong>Auto Wiring</strong>. By scanning your application for components (classes annotated with <code>@Component</code>), Spring automatically identifies classes that match the required dependency type (e.g., matching an interface to its concrete implementation) and wires them together.</p>
+
+    
+
+    <div class="info-box">
+      <div class="info-box-title" style="font-size: 12px; font-weight: 700; color: #fff;">Key Takeaway</div>
+      <p>The Spring Container performs two core duties: <strong>Inversion of Control</strong> (creating/managing beans) and <strong>Dependency Injection</strong> (injecting those beans into other objects).</p>
+    </div>
+  </div>
+</body>
+</html>
