@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Understanding Spring Constructor Injection</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-primary: #34a853;
+      --bg-card: #1c1e29;
+      --border-color: #2e3245;
+      --text-main: #f3f4f6;
+      --text-muted: #8e96aa;
+    }
+    body { background-color: #14151f; color: var(--text-main); font-family: 'Plus Jakarta Sans', sans-serif; line-height: 1.6; padding: 30px; }
+    .guide-container { max-width: 800px; margin: 0 auto; background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 32px; }
+    .header-block { border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 24px; }
+    h1 { font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .section-title { font-size: 16px; font-weight: 700; color: var(--brand-primary); margin: 28px 0 12px 0; display: flex; align-items: center; gap: 8px; }
+    p { font-size: 14px; margin-bottom: 16px; }
+    .info-box { background-color: rgba(9, 10, 15, 0.4); border-left: 3px solid var(--brand-primary); padding: 16px; border-radius: 0 6px 6px 0; margin: 20px 0; }
+    ul { list-style-type: none; }
+    li { position: relative; padding-left: 24px; margin-bottom: 10px; font-size: 14px; }
+    li::before { content: "⚙"; position: absolute; left: 0; color: var(--brand-primary); }
+  </style>
+</head>
+<body>
+  <div class="guide-container">
+    <div class="header-block">
+      <h1>Constructor Injection: Behind the Scenes</h1>
+      <p>Mastering how Spring handles dependency management and component lifecycle.</p>
+    </div>
+
+    <div class="section-title">The Spring Processing Workflow</div>
+    <p>When you start your Spring application, the framework automatically handles the complex task of "wiring" your components together. Here is what happens behind the scenes for your <code>CourseController</code> and <code>Instructor</code> dependency:</p>
+    
+    <ul>
+      <li><strong>Component Scanning:</strong> Spring detects classes marked with annotations like <code>@Component</code> (in your <code>JavaInstructor</code> implementation) and <code>@RestController</code>.</li>
+      <li><strong>Bean Creation:</strong> Spring manages the lifecycle by instantiating your classes, effectively performing <code>new JavaInstructor()</code> on your behalf.</li>
+      <li><strong>Dependency Resolution:</strong> Spring recognizes that <code>CourseController</code> depends on an <code>Instructor</code> interface via its constructor.</li>
+      <li><strong>Injection:</strong> Spring automatically "injects" the concrete <code>JavaInstructor</code> instance into the <code>CourseController</code>, ensuring your application is fully assembled and ready for use.</li>
+    </ul>
+
+    <div class="section-title">Beyond the Basics</div>
+    <div class="info-box">
+      <div class="info-box-title" style="font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 4px;">More Than DI</div>
+      <p>While Inversion of Control (IoC) and Dependency Injection (DI) are core foundations, Spring is a robust ecosystem designed for enterprise-grade features. Soon, you will leverage these components to implement:</p>
+      <ul style="margin-top: 8px;">
+        <li>Database Access & Transactions</li>
+        <li>Full CRUD REST API Functionality</li>
+        <li>Web MVC Security</li>
+      </ul>
+    </div>
+
+    <div class="footer-note" style="border-top: 1px solid var(--border-color); margin-top: 32px; padding-top: 16px; font-size: 13px; color: var(--text-muted); text-align: center;">
+      Keep building! You are moving toward creating real-world, data-driven applications.
+    </div>
+  </div>
+</body>
+</html>
