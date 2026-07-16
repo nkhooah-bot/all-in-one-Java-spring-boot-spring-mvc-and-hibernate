@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Setting Up a New Spring Boot Project</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-primary: #34a853;
+      --bg-card: #1c1e29;
+      --border-color: #2e3245;
+      --text-main: #f3f4f6;
+      --text-muted: #8e96aa;
+    }
+    body { background-color: #14151f; color: var(--text-main); font-family: 'Plus Jakarta Sans', sans-serif; line-height: 1.6; padding: 30px; }
+    .guide-container { max-width: 800px; margin: 0 auto; background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 32px; }
+    .header-block { border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 24px; }
+    h1 { font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .section-title { font-size: 16px; font-weight: 700; color: var(--brand-primary); margin: 28px 0 12px 0; display: flex; align-items: center; gap: 8px; }
+    p { font-size: 14px; margin-bottom: 16px; }
+    .step-list { list-style-type: none; }
+    .step-item { position: relative; padding-left: 32px; margin-bottom: 16px; font-size: 14px; }
+    .step-number { position: absolute; left: 0; top: 2px; width: 20px; height: 20px; background-color: rgba(52, 168, 83, 0.1); border: 1px solid var(--brand-primary); color: var(--brand-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+    .footer-note { border-top: 1px solid var(--border-color); margin-top: 32px; padding-top: 16px; text-align: center; font-size: 13px; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+  <div class="guide-container">
+    <div class="header-block">
+      <h1>Spring Boot Project Initialization</h1>
+      <p>Follow these steps to initialize your environment using Spring Initializr.</p>
+    </div>
+
+    
+
+    <div class="section-title">Step 1: Configuration</div>
+    <ul class="step-list">
+      <li class="step-item">
+        <span class="step-number">1</span>
+        Visit <a href="https://start.spring.io" style="color: var(--brand-primary);">start.spring.io</a>. Select <strong>Maven</strong> as the project type and <strong>Java</strong> as the language.
+      </li>
+      <li class="step-item">
+        <span class="step-number">2</span>
+        Choose a stable Spring Boot version (avoiding snapshots). Set the Group to <code>com.example</code> and the Artifact to <code>spring-core-tutorial</code>. Select <strong>Jar</strong> for packaging.
+      </li>
+    </ul>
+
+    <div class="section-title">Step 2: Add Dependencies</div>
+    <ul class="step-list">
+      <li class="step-item">
+        <span class="step-number">3</span>
+        Add the <strong>Spring Boot DevTools</strong> dependency for faster development cycles and live reloads.
+      </li>
+      <li class="step-item">
+        <span class="step-number">4</span>
+        Add the <strong>Spring Web</strong> dependency to enable support for building RESTful web services.
+      </li>
+    </ul>
+
+    <div class="section-title">Step 3: Generate and Load</div>
+    <ul class="step-list">
+      <li class="step-item">
+        <span class="step-number">5</span>
+        Click <strong>Generate</strong> to download the project zip. Extract the file and move it to your preferred workspace (e.g., your Desktop).
+      </li>
+      <li class="step-item">
+        <span class="step-number">6</span>
+        Open IntelliJ IDEA and drag the <code>spring-core-tutorial</code> folder into the editor. IntelliJ will automatically detect the Maven structure and import your dependencies.
+      </li>
+    </ul>
+
+    
+
+    <div class="footer-note">
+      Your workspace is now successfully configured and ready for development.
+    </div>
+  </div>
+</body>
+</html>
