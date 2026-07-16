@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Understanding Inversion of Control (IoC) & Spring Container</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-primary: #34a853;
+      --bg-main: #090a0f;
+      --bg-card: #1c1e29;
+      --border-color: #2e3245;
+      --text-main: #f3f4f6;
+      --text-muted: #8e96aa;
+      --accent-glow: rgba(52, 168, 83, 0.1);
+    }
+    body { background-color: #14151f; color: var(--text-main); font-family: 'Plus Jakarta Sans', sans-serif; line-height: 1.6; padding: 30px; }
+    .guide-container { max-width: 800px; margin: 0 auto; background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 32px; }
+    .header-block { border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 24px; }
+    h1 { font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .section-title { font-size: 16px; font-weight: 700; text-transform: uppercase; color: var(--brand-primary); margin: 28px 0 12px 0; display: flex; align-items: center; gap: 8px; }
+    p { font-size: 14px; margin-bottom: 16px; }
+    .info-box { background-color: rgba(9, 10, 15, 0.4); border-left: 3px solid var(--brand-primary); padding: 16px; border-radius: 0 6px 6px 0; margin: 20px 0; }
+    .info-box-title { font-size: 12px; font-weight: 700; text-transform: uppercase; color: #fff; margin-bottom: 4px; }
+    ul { list-style-type: none; }
+    li { position: relative; padding-left: 24px; margin-bottom: 10px; font-size: 14px; }
+    li::before { content: "→"; position: absolute; left: 0; color: var(--brand-primary); }
+  </style>
+</head>
+<body>
+  <div class="guide-container">
+    <div class="header-block">
+      <h1>Inversion of Control (IoC) & The Spring Container</h1>
+      <p>Mastering the fundamental approach to object management in Spring Boot.</p>
+    </div>
+
+    <div class="section-title">What is Inversion of Control?</div>
+    <p>Inversion of Control (IoC) is the design approach of <strong>outsourcing the construction and management of objects</strong>. Instead of your application code manually creating the objects it needs, it hands that responsibility over to an external entity.</p>
+
+    <div class="section-title">The "Object Factory" Scenario</div>
+    <p>Imagine your application needs an instructor to provide programming exercises. You want the flexibility to switch between a Java, C#, PHP, or Python instructor without rewriting your application code.</p>
+    <p><strong>The Ideal Solution:</strong></p>
+    <ul>
+      <li>You ask an <strong>Object Factory</strong> for an "Instructor" object.</li>
+      <li>The Factory looks at your configuration and decides whether to create a Java instructor, Python instructor, etc.</li>
+      <li>The Factory hands you the reference to that object.</li>
+    </ul>
+
+    
+
+    <div class="section-title">The Spring Container</div>
+    <div class="info-box">
+      <div class="info-box-title">The Spring Container is the Factory</div>
+      <p>In Spring, the <strong>Spring Container</strong> acts as that Object Factory. You tell Spring which objects you need, and it determines how to create them based on your project's configuration, managing their lifecycle for you.</p>
+    </div>
+
+    <div class="section-title">Configuring the Spring Container</div>
+    <p>There are three primary ways to configure how the Spring Container creates and manages your objects:</p>
+    <ul>
+      <li><strong>Java Annotations:</strong> The modern, preferred approach.</li>
+      <li><strong>Java Source Code:</strong> Configuring beans explicitly via Java code.</li>
+      <li><strong>XML Configuration:</strong> The older, legacy approach (rarely used in modern Spring Boot).</li>
+    </ul>
+
+    <div class="footer-note" style="border-top: 1px solid var(--border-color); margin-top: 32px; padding-top: 16px; font-size: 13px; color: var(--text-muted); text-align: center;">
+      Stay tuned as we explore these configuration approaches in the upcoming examples.
+    </div>
+  </div>
+</body>
+</html>
