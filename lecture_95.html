@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Setter Injection in Spring Boot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-primary: #34a853;
+      --bg-card: #1c1e29;
+      --border-color: #2e3245;
+      --text-main: #f3f4f6;
+      --text-muted: #8e96aa;
+    }
+    body { background-color: #14151f; color: var(--text-main); font-family: 'Plus Jakarta Sans', sans-serif; line-height: 1.6; padding: 30px; }
+    .guide-container { max-width: 800px; margin: 0 auto; background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 32px; }
+    .header-block { border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 24px; }
+    h1 { font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .section-title { font-size: 16px; font-weight: 700; color: var(--brand-primary); margin: 28px 0 12px 0; display: flex; align-items: center; gap: 8px; }
+    p { font-size: 14px; margin-bottom: 16px; }
+    pre { background-color: #090a0f; border: 1px solid var(--border-color); border-radius: 6px; padding: 16px; overflow-x: auto; margin: 12px 0; }
+    code { font-family: 'JetBrains Mono', monospace; color: #e5c07b; font-size: 13px; }
+    .step-list { list-style-type: none; padding: 0; }
+    .step-item { position: relative; padding-left: 32px; margin-bottom: 16px; font-size: 14px; }
+    .step-number { position: absolute; left: 0; top: 2px; width: 20px; height: 20px; background-color: rgba(52, 168, 83, 0.1); border: 1px solid var(--brand-primary); color: var(--brand-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+    .footer-note { border-top: 1px solid var(--border-color); margin-top: 32px; padding-top: 16px; text-align: center; font-size: 13px; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+  <div class="guide-container">
+    <div class="header-block">
+      <h1>Setter Injection in Spring Boot</h1>
+      <p>A comprehensive guide to using setter methods for dependency injection.</p>
+    </div>
+
+    
+
+    <div class="section-title">Implementation Steps</div>
+    <ul class="step-list">
+      <li class="step-item"><span class="step-number">1</span><strong>Create Setter:</strong> Define a public setter method in your target class.</li>
+      <li class="step-item"><span class="step-number">2</span><strong>Annotate:</strong> Use <code>@Autowired</code> on the setter method to trigger Spring's injection process.</li>
+    </ul>
+
+    <div class="section-title">Code Example</div>
+    <pre><code>@RestController
+public class CourseController {
+    
+    private Instructor myInstructor;
+
+    @Autowired
+    public void setInstructor(Instructor instructor) {
+        this.myInstructor = instructor;
+    }
+
+    @GetMapping("/programmingexercise")
+    public String getProgrammingExercise() {
+        return myInstructor.getProgrammingExercises();
+    }
+}</code></pre>
+
+    <div class="section-title">How to Test</div>
+    <p>1. <strong>Run:</strong> Start your application. Spring will detect the <code>@Autowired</code> setter and inject the bean.</p>
+    <p>2. <strong>Verify:</strong> Visit <code>http://localhost:8080/programmingexercise</code>. Success is confirmed if you see the instructor's returned string.</p>
+    <p>3. <strong>Hot Reload:</strong> Use <code>Ctrl+S</code> after changing the code to trigger an automatic context reload via <code>spring-boot-devtools</code>.</p>
+
+    <div class="section-title">Injection Strategy</div>
+    <p>Choose <strong>Constructor Injection</strong> for required dependencies to ensure immutability, and <strong>Setter Injection</strong> for optional dependencies where you need the flexibility to re-assign or omit the dependency.</p>
+
+    <div class="footer-note">
+      Success! Your Spring application is correctly wired using setter-based dependency injection.
+    </div>
+  </div>
+</body>
+</html>
