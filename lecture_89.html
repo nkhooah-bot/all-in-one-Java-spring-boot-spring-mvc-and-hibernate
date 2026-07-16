@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Implementing Constructor Injection in Spring Boot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-primary: #34a853;
+      --bg-card: #1c1e29;
+      --border-color: #2e3245;
+      --text-main: #f3f4f6;
+      --text-muted: #8e96aa;
+    }
+    body { background-color: #14151f; color: var(--text-main); font-family: 'Plus Jakarta Sans', sans-serif; line-height: 1.6; padding: 30px; }
+    .guide-container { max-width: 800px; margin: 0 auto; background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 32px; }
+    .header-block { border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 24px; }
+    h1 { font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .section-title { font-size: 16px; font-weight: 700; color: var(--brand-primary); margin: 28px 0 12px 0; display: flex; align-items: center; gap: 8px; }
+    p { font-size: 14px; margin-bottom: 16px; }
+    .step-list { list-style-type: none; margin-bottom: 20px; }
+    .step-item { position: relative; padding-left: 32px; margin-bottom: 16px; font-size: 14px; }
+    .step-number { position: absolute; left: 0; top: 2px; width: 20px; height: 20px; background-color: rgba(52, 168, 83, 0.1); border: 1px solid var(--brand-primary); color: var(--brand-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+    .footer-note { border-top: 1px solid var(--border-color); margin-top: 32px; padding-top: 16px; text-align: center; font-size: 13px; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+  <div class="guide-container">
+    <div class="header-block">
+      <h1>Implementing Constructor Injection</h1>
+      <p>A step-by-step guide to decoupling your components using Spring's recommended injection strategy.</p>
+    </div>
+
+    <div class="section-title">Workflow Overview</div>
+    <p>To implement constructor injection, we follow a four-step lifecycle to ensure Spring can identify, manage, and wire our dependencies automatically.</p>
+
+    
+
+    <ul class="step-list">
+      <li class="step-item">
+        <span class="step-number">1</span>
+        <strong>Define the Dependency:</strong> Create an interface and a concrete implementation class. Mark the implementation with <code>@Component</code> so Spring registers it as a bean.
+      </li>
+      <li class="step-item">
+        <span class="step-number">2</span>
+        <strong>Create the REST Controller:</strong> Annotate your class with <code>@RestController</code> to enable web request handling.
+      </li>
+      <li class="step-item">
+        <span class="step-number">3</span>
+        <strong>Implement Constructor Injection:</strong> Define a private field for the dependency and create a constructor that accepts it as a parameter. Annotate the constructor with <code>@Autowired</code>.
+      </li>
+      <li class="step-item">
+        <span class="step-number">4</span>
+        <strong>Expose the Endpoint:</strong> Map a method to a URL using <code>@GetMapping</code> and use the injected dependency to return data to the browser.
+      </li>
+    </ul>
+
+    
+
+    <div class="section-title">Runtime Mechanics</div>
+    <p>When your application starts, Spring performs a <strong>component scan</strong> to find all beans. It identifies the required <code>Instructor</code> bean and "injects" it into the <code>CourseController</code> constructor during bean creation. This ensures your controller remains decoupled from the specific implementation details.</p>
+
+    <div class="footer-note">
+      Success! Your controller now utilizes constructor injection, the industry-standard approach for required dependencies in Spring Boot.
+    </div>
+  </div>
+</body>
+</html>
