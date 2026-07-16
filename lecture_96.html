@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Setter Injection in Spring Boot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-primary: #34a853;
+      --bg-card: #1c1e29;
+      --border-color: #2e3245;
+      --text-main: #f3f4f6;
+      --text-muted: #8e96aa;
+    }
+    body { background-color: #14151f; color: var(--text-main); font-family: 'Plus Jakarta Sans', sans-serif; line-height: 1.6; padding: 30px; }
+    .guide-container { max-width: 800px; margin: 0 auto; background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 32px; }
+    .header-block { border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 24px; }
+    h1 { font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .section-title { font-size: 16px; font-weight: 700; color: var(--brand-primary); margin: 28px 0 12px 0; display: flex; align-items: center; gap: 8px; }
+    p { font-size: 14px; margin-bottom: 16px; }
+    pre { background-color: #090a0f; border: 1px solid var(--border-color); border-radius: 6px; padding: 16px; overflow-x: auto; margin: 12px 0; }
+    code { font-family: 'JetBrains Mono', monospace; color: #e5c07b; font-size: 13px; }
+    .step-list { list-style-type: none; padding: 0; }
+    .step-item { position: relative; padding-left: 32px; margin-bottom: 16px; font-size: 14px; }
+    .step-number { position: absolute; left: 0; top: 2px; width: 20px; height: 20px; background-color: rgba(52, 168, 83, 0.1); border: 1px solid var(--brand-primary); color: var(--brand-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+    .footer-note { border-top: 1px solid var(--border-color); margin-top: 32px; padding-top: 16px; text-align: center; font-size: 13px; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+  <div class="guide-container">
+    <div class="header-block">
+      <h1>Setter Injection in Spring Boot</h1>
+      <p>Mastering dependency injection via setter methods for modular Spring applications.</p>
+    </div>
+
+    
+
+    <div class="section-title">Implementation Steps</div>
+    <ul class="step-list">
+      <li class="step-item"><span class="step-number">1</span><strong>Create Setter Method:</strong> Define a public method to accept the dependency.</li>
+      <li class="step-item"><span class="step-number">2</span><strong>Add @Autowired:</strong> Annotate the method to allow Spring to automatically inject the required bean.</li>
+    </ul>
+
+    <div class="section-title">Code Example</div>
+    <pre><code>@RestController
+public class CourseController {
+    
+    private Instructor myInstructor;
+
+    // Any method name works as long as it is @Autowired
+    @Autowired
+    public void setInstructor(Instructor instructor) {
+        this.myInstructor = instructor;
+    }
+
+    @GetMapping("/programmingexercise")
+    public String getProgrammingExercise() {
+        return myInstructor.getProgrammingExercises();
+    }
+}</code></pre>
+
+    <div class="section-title">Testing Your Setup</div>
+    <p>1. <strong>Startup:</strong> Run your application. Spring will instantiate the controller and call the setter method automatically.</p>
+    <p>2. <strong>Validate:</strong> Navigate to <code>http://localhost:8080/programmingexercise</code> to confirm the dependency is active.</p>
+    <p>3. <strong>Hot-Reload:</strong> Use <code>Ctrl+S</code> (with DevTools) to modify and verify real-time injection updates without full restarts.</p>
+
+    <div class="section-title">When to use Setter Injection?</div>
+    <p>While constructor injection is the industry standard for <strong>required</strong> dependencies, setter injection is the preferred choice for <strong>optional</strong> dependencies where you need the flexibility to modify or omit the injected component.</p>
+
+    <div class="footer-note">
+      Success! You have successfully implemented and tested setter-based dependency injection in your Spring Boot project.
+    </div>
+  </div>
+</body>
+</html>
