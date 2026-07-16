@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Managing Bean Ambiguity with @Qualifier</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root { --brand-primary: #34a853; --bg-card: #1c1e29; --border-color: #2e3245; --text-main: #f3f4f6; }
+    body { background-color: #14151f; color: var(--text-main); font-family: 'Plus Jakarta Sans', sans-serif; padding: 30px; }
+    .guide-container { max-width: 800px; margin: 0 auto; background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 32px; }
+    h1 { color: #fff; font-size: 24px; }
+    .section-title { font-size: 16px; font-weight: 700; color: var(--brand-primary); margin: 24px 0 12px 0; }
+    code { background: #090a0f; color: #e5c07b; padding: 2px 6px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; }
+    pre { background: #090a0f; padding: 16px; border-radius: 6px; overflow-x: auto; color: #e5c07b; }
+  </style>
+</head>
+<body>
+  <div class="guide-container">
+    <h1>Resolving Ambiguity with @Qualifier</h1>
+    
+    <div class="section-title">Why it happens</div>
+    <p>When multiple classes implement the same interface, Spring cannot decide which one to inject, resulting in a startup failure.</p>
+    
+    <div class="section-title">The Solution</div>
+    <p>Use <code>@Qualifier("beanId")</code> to explicitly select the required implementation. The default bean ID is the class name with the first character in lowercase.</p>
+
+    <div class="section-title">Implementation Example (Constructor)</div>
+    <pre><code>@Autowired
+public CourseController(@Qualifier("javaInstructor") Instructor instructor) {
+    this.myInstructor = instructor;
+}</code></pre>
+
+    <div class="section-title">Troubleshooting</div>
+    <p>If you encounter <code>NoUniqueBeanDefinitionException</code>, verify:</p>
+    <ul>
+        <li>You have correctly identified the bean ID (class name with lowercase first letter).</li>
+        <li>Your <code>@Qualifier</code> matches the bean ID exactly.</li>
+    </ul>
+  </div>
+</body>
+</html>
