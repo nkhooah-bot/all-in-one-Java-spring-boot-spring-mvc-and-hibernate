@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spring Boot Component Scanning Guide</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-primary: #34a853;
+      --bg-card: #1c1e29;
+      --border-color: #2e3245;
+      --text-main: #f3f4f6;
+      --text-muted: #8e96aa;
+      --code-bg: #090a0f;
+    }
+    body { background-color: #14151f; color: var(--text-main); font-family: 'Plus Jakarta Sans', sans-serif; line-height: 1.6; padding: 30px; margin: 0; }
+    .guide-container { max-width: 900px; margin: 0 auto; background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+    
+    /* Header Styles */
+    .header-block { border-bottom: 1px solid var(--border-color); padding-bottom: 24px; margin-bottom: 32px; }
+    h1 { font-size: 28px; font-weight: 700; color: #fff; margin: 0 0 8px 0; }
+    .subtitle { font-size: 15px; color: var(--text-muted); }
+
+    /* Typography */
+    .section-title { font-size: 18px; font-weight: 700; color: var(--brand-primary); margin: 32px 0 16px 0; display: flex; align-items: center; gap: 10px; }
+    .section-title::before { content: ""; width: 4px; height: 18px; background: var(--brand-primary); border-radius: 2px; }
+    p { font-size: 14px; margin-bottom: 16px; color: #cbd5e1; }
+    
+    /* Code Blocks */
+    pre { background-color: var(--code-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; overflow-x: auto; margin: 16px 0; }
+    code { font-family: 'JetBrains Mono', monospace; color: #e5c07b; font-size: 13px; line-height: 1.5; }
+    .keyword { color: #c678dd; }
+    .annotation { color: #61afef; }
+    .string { color: #98c379; }
+
+    /* Comparison Table */
+    .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 24px 0; }
+    .comp-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); padding: 20px; border-radius: 8px; }
+    .comp-card h3 { font-size: 14px; color: #fff; margin: 0 0 10px 0; text-transform: uppercase; letter-spacing: 1px; }
+    .comp-card ul { padding-left: 18px; margin: 0; font-size: 13px; color: var(--text-muted); }
+    .comp-card li { margin-bottom: 8px; }
+
+    /* Footer */
+    .footer-note { border-top: 1px solid var(--border-color); margin-top: 40px; padding-top: 20px; text-align: center; font-size: 13px; color: var(--text-muted); font-style: italic; }
+  </style>
+</head>
+<body>
+  <div class="guide-container">
+    <div class="header-block">
+      <h1>Spring Boot Component Scanning</h1>
+      <div class="subtitle">Mastering automated bean discovery and custom package registration.</div>
+    </div>
+
+    <p>Spring Boot simplifies application setup by automatically scanning your Java classes for annotations like <code>@Component</code>, <code>@RestController</code>, and <code>@Service</code> to register them as Beans in the Spring Container.</p>
+
+    <div class="section-title">The "Magic" Annotation: @SpringBootApplication</div>
+    <p>This is a convenience annotation that combines three critical features:</p>
+    <ul>
+      <li><strong>@EnableAutoConfiguration:</strong> Activates Spring Boot’s intelligent auto-config.</li>
+      <li><strong>@ComponentScan:</strong> Tells Spring to look for components in the current package and sub-packages.</li>
+      <li><strong>@Configuration:</strong> Tags the class as a source of bean definitions.</li>
+    </ul>
+
+    <div class="section-title">Scanning Strategy Comparison</div>
+    
+    <div class="comparison-grid">
+      <div class="comp-card">
+        <h3>Default Scanning</h3>
+        <ul>
+          <li>Implicitly starts from the package of the main class.</li>
+          <li>Automatically scans all sub-packages underneath.</li>
+          <li>Requires no additional code.</li>
+        </ul>
+      </div>
+      <div class="comp-card" style="border-color: var(--brand-primary);">
+        <h3>Explicit Scanning</h3>
+        <ul>
+          <li>Used when components live in external packages.</li>
+          <li>Requires the <code>scanBasePackages</code> attribute.</li>
+          <li>Overrides the default single-package limit.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section-title">Implementation: Explicit Scanning</div>
+    <p>When your structure includes packages like <code>com.example.edu</code> that are NOT sub-packages of your main app, use the following configuration:</p>
+
+    <pre><code><span class="keyword">package</span> com.example.springcoretutorial;
+
+<span class="keyword">import</span> org.springframework.boot.SpringApplication;
+<span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;
+
+<span class="annotation">@SpringBootApplication</span>(scanBasePackages = {
+    <span class="string">"com.example.springcoretutorial"</span>, 
+    <span class="string">"com.example.edu"</span>,
+    <span class="string">"org.university.utils"</span>
+})
+<span class="keyword">public class</span> SpringCoreTutorialApplication {
+
+    <span class="keyword">public static void</span> main(String[] args) {
+        SpringApplication.run(SpringCoreTutorialApplication.class, args);
+    }
+}</code></pre>
+
+    <div class="section-title">Troubleshooting & Logs</div>
+    <p>If Spring cannot find your bean (resulting in a <em>BeanDefinitionStoreException</em>), verify these common points:</p>
+    <ul style="font-size: 14px; color: #cbd5e1;">
+      <li>Is the class annotated with <code>@Component</code> or its stereotypes?</li>
+      <li>Is the package listed correctly in the <code>scanBasePackages</code> array?</li>
+      <li>Check the <strong>Tomcat Console</strong>: Successful scanning will show mapped endpoints in the logs during startup.</li>
+    </ul>
+
+    <div class="footer-note">
+      Best Practice: Keep your project hierarchical under one root package to take full advantage of Spring's default "Zero-Config" scanning.
+    </div>
+  </div>
+</body>
+</html>
